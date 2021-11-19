@@ -47,7 +47,7 @@
                             <div class="col-md-6 col-xl-4 mb-3">
                                 <label for="trip-class" class="form-label">Classe</label>
                                 <select class="form-select" id="trip-class">
-                                    <option value="economy-class" selected>Économie</option>
+                                    <option value="economy-class" selected>Économique</option>
                                     <option value="business-class">Affaire</option>
                                     <option value="firts-class">Première</option>
                                 </select>
