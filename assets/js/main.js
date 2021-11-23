@@ -2,9 +2,9 @@
 //   console.log(this.responseText);
 // }
 let request = new XMLHttpRequest(); // New request object
-
 const autocomplete = (object, element, field = null) => {
   let output = [];
+  // console.log('object : ', object);
 
   if (field !== null) {
     output = convertObjectToArray(object, field);
@@ -41,7 +41,33 @@ const convertObjectToArray = (object, field) => {
   return arrayOutput;
 };
 
+const showReturn = () => {
+  const tripType = document.querySelector('#trip-type');
+  const returnFlight = document.querySelector('#return-flight');
+  tripType.addEventListener('input', function (event) {
+    if ('round-trip' == tripType.value) {
+      returnFlight.classList.remove("hidden");
+      console.log('returnFlight.classList :', returnFlight.classList);
+    }
+    if ('one-way' == tripType.value) {
+      returnFlight.classList.add("hidden");
+      console.log('returnFlight.classList :', returnFlight.classList);
+    }
+  })
+  console.log(tripType.value);
+}
+
+const departureDate = document.querySelector('#departure-date');
+const returnDate = document.querySelector('#return-date');
+
+returnDate.setAttribute('min',departureDate.getAttribute('min'));
+departureDate.addEventListener('change', function(event) {
+  returnDate.setAttribute('min',departureDate.value);
+})
+
+
 window.onload = function () {
+  console.log('request.response : ', request.response);
   let cityStartAutocompleteList = document.getElementById(
     "city-start-autocomplete-list"
   );
@@ -51,7 +77,7 @@ window.onload = function () {
 
   const processData = function (data) {
     data.map((item) => {
-      item.identification = `${item["code"]}, ${item["name"]} - ${item["country_name"]}`;
+      item.identification = `${item["code"]}, ${item["airport_name"]} - ${item["country_name"]}`;
     });
     autocomplete(data, cityStartAutocompleteList, "identification");
     autocomplete(data, cityToAutocompleteList, "identification");
@@ -72,4 +98,12 @@ window.onload = function () {
   request.send();
 
   // console.log(request);
+  showReturn();
 };
+
+
+const fp = flatpickr("#myID", {}); // flatpickr
+const myInput = document.querySelector(".myInput");
+const fp = flatpickr(myInput, {});  // flatpickr
+const calendars = flatpickr(".calendar", {});
+calendars[0] // flatpickr

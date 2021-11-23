@@ -1,7 +1,15 @@
-main{
-    height: 100vh;
+main.bg-image{
+    min-height: 100vh;
     background-image: url(../img/mickey-o-neil-xL66l\ -\ msXU-unsplash.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+.hidden {
+    display: none;
+}
+
+label {
+    font-weight: bold;
 }

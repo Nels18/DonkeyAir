@@ -1,14 +1,11 @@
 <?php
 
-require_once '_connect.php';
-$pdo = new \PDO(DSN, USER, PASS);
+require_once 'lib/Database.php';
 
-$query = "SELECT name, code, country_name FROM airport;";
-$statement = $pdo->query($query);
-$airports = $statement->fetchAll(PDO::FETCH_ASSOC);
+$request = "SELECT a.name airport_name, a.code, c.name country_name FROM airport a INNER JOIN country c ON c.code = a.country_code
+;";
+
+$airports = Database::getInstance()->query($request);
 $airportsList = json_encode($airports);
-echo $airportsList;
-// foreach ($airports as $airport) {
 
-//     echo  $airport['code']. " : " . $airport['name'] . " - " . $airport['country_name'] ."<br>";
-// }
+echo $airportsList;
