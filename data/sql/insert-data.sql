@@ -17,7 +17,7 @@ VALUES
 -- -----------------------------------------------------
 
 
-INSERT INTO `myTable` (`customer_id`,`option_id`)
+INSERT INTO `booking` (`customer_id`,`option_id`)
 VALUES
   (2,1),
   (5,2),
@@ -52,9 +52,9 @@ VALUES
 
 INSERT INTO `option` (`name`,`multiplier_coefficient`) 
 VALUES
-  ("Basic", 1,),
-  ("Plus", 1.3,),
-  ("Max", 1.8,);
+  ("Basic", 1),
+  ("Plus", 1.3),
+  ("Max", 1.8);
 
 
 -- -----------------------------------------------------
