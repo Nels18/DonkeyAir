@@ -96,7 +96,6 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `donkeyair`.`plane` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `producer` VARCHAR(45) NULL,
   `model` VARCHAR(45) NULL,
   `capacity_first_class` INT NOT NULL,
   `capacity_second_class` INT NOT NULL,
