@@ -1,4 +1,21 @@
-<?php if ('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])): ;?>
+<?php
+session_start();
+
+require_once("lib/Dataform.php");
+
+$valuesForm = [
+    'city-start' => Dataform::getInstance()->getValue('city-start'),
+    'city-to' => Dataform::getInstance()->getValue('city-to'),
+    'departure-date' => Dataform::getInstance()->getValue('departure-date'),
+    'return-date' => Dataform::getInstance()->getValue('return-date'),
+    'trip-class' => Dataform::getInstance()->getValue('trip-class'),
+    'trip-type' => Dataform::getInstance()->getValue('trip-type'),
+    'number-of-passenger' => intval(Dataform::getInstance()->getValue('number-of-passenger')),
+];
+
+
+if ('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])):
+;?>
 <form action="group-travel-confirmation.php" method="get">
 <!-- <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get"> -->
 <?php else: ;?>
@@ -8,47 +25,36 @@
     <div class="mb-3">
         <label for="city-start" class="form-label">De</label>
         <input type="text" class="form-control" id="city-start" placeholder="Ville de départ" list="city-start-autocomplete-list" name="city-start" value="<?php
-        if (isset($_GET['city-start'])) {
-            echo $_GET['city-start'];
-        }?>">
+        if (isset($valuesForm['city-start'])) {
+            echo $valuesForm['city-start'];
+        }?>" required>
         <datalist id="city-start-autocomplete-list">
         </datalist>
     </div>
     <div class="mb-3">
         <label for="city-to" class="form-label">Vers</label>
         <input type="text" class="form-control" id="city-to" placeholder="Ville de destination" list="city-to-autocomplete-list" name="city-to" value="<?php
-        if (isset($_GET['city-to'])) {
-            echo $_GET['city-to'];
-        }?>">
+        if (isset($valuesForm['city-to'])) {
+            echo $valuesForm['city-to'];
+        }?>" required>
         <datalist id="city-to-autocomplete-list">
         </datalist>
     </div>
     <div class="row">
         <div class="col mb-3">
             <label for="departure-date" class="form-label">Départ le </label>
-            <div class="flatpickr">
-                <input class="" type="text" placeholder="Select Date.." data-input> <!-- input is mandatory -->
-
-                <a class="input-button" title="toggle" data-toggle>
-                    <i class="icon-calendar"></i>
-                </a>
-
-                <a class="input-button" title="clear" data-clear>
-                    <i class="icon-close"></i>
-                </a>
-            </div>
             <input type="date" class="form-control" id="departure-date" name="departure-date" min="<?= $now->format('Y-m-d') ; ?>" value="<?php
-            if (isset($_GET['departure-date'])) {
-                echo $_GET['departure-date'];
+            if (isset($valuesForm['departure-date'])) {
+                echo $valuesForm['departure-date'];
                 }
-            ?>">
+            ?>" required>
         </div>
         <div class="col mb-3" id="return-flight">
             <label for="return-date" class="form-label">Retour le</label>
             <input type="date" class="form-control" id="return-date" name="return-date" min="<?php 
-            if (isset($_GET['return-date'])) {
-                echo $_GET['return-date'];
-            };?>">
+            if (isset($valuesForm['return-date'])) {
+                echo $valuesForm['return-date'];
+            };?>" required>
         </div>
     </div>
     <div class="row">
@@ -56,11 +62,11 @@
             <label for="trip-type" class="form-label">Type de voyage</label>
             <select class="form-select" id="trip-type" name="trip-type">
                 <option value="round-trip" <?php 
-                if ("round-trip" == isset($_GET['trip-type']) || empty($_GET['trip-type'])) {
+                if ("round-trip" == isset($valuesForm['trip-type']) || empty($valuesForm['trip-type'])) {
                     echo "selected";
                 };?> >Aller retour</option>
                 <option value="one-way" <?php
-                if ("one-way" == isset($_GET['trip-type'])) {
+                if ("one-way" == isset($valuesForm['trip-type'])) {
                     "selected";  
                 };?> >Aller simple</option>
             </select>
@@ -69,33 +75,35 @@
             <label for="trip-class" class="form-label">Classe</label>
             <select class="form-select" id="trip-class" name="trip-class">
                 <option value="economy-class" <?php
-                if ("economy-class" == isset($_GET['trip-class']) || empty($_GET['trip-class'])) {
+                if ("economy-class" == isset($valuesForm['trip-class']) || empty($valuesForm['trip-class'])) {
                     echo "selected";
-                };?> >Économique</option>
+                };?> ><?php echo Dataform::translateTripClass('economy-class'); ?></option>
                 <option value="business-class" <?php
-                if ("business-class" == isset($_GET['trip-class'])) {
+                if ("business-class" == isset($valuesForm['trip-class'])) {
                     "selected";
-                };?> >Affaire</option>
+                };?> ><?php echo Dataform::translateTripClass('business-class'); ?></option>
                 <option value="firts-class" <?php 
-                if ("firts-class" == isset($_GET['trip-class'])) {
+                if ("firts-class" == isset($valuesForm['trip-class'])) {
                     "selected";
-                };?> >Première</option>
+                };?> ><?php echo Dataform::translateTripClass('firts-class'); ?></option>
             </select>
         </div>
         <div class="col-md col-xl-4 mb-3">
             <label for="number-of-passenger" class="form-label">Nombre de passagers</label>
-            <input type="number" class="form-control" id="number-of-passenger" name="number-of-passenger" min="<?php if ('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])) {
-                echo 13;
-            } else {
-                echo 1; 
-            }?>"
-            <?php if ('/index.php' == htmlspecialchars($_SERVER["PHP_SELF"])) {
-                echo "max=\"12\"";
-            }; ?>
-            <?php if (isset($_GET['number-of-passenger'])) {
-                echo "value=\"" . $_GET['number-of-passenger'] . "\"";
-            };?> >
-        </div>
+            <input type="number" class="form-control" id="number-of-passenger" name="number-of-passenger" 
+                <?php
+                    if ('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])) {
+                        echo "min=\"13\"";
+                    } else {
+                        echo "min=\"1\"";
+                    }
+
+                    if ('/index.php' == htmlspecialchars($_SERVER["PHP_SELF"])) {
+                        echo "max=\"12\"";
+                        echo "value=\"" . $valuesForm['number-of-passenger'] . "\"";
+                    }
+                ?>
+            required >
     </div>
     <?php if('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])): ?>
     <div class="row justify-content-end">
@@ -105,7 +113,7 @@
     </div>
     <?php else: ?>
         <div >
-            <p class="text-primary">Vous souhaitez voyager avec un groupe de plus de <?= $numberMaxPassengers; ?> personnes ? Pas de soucis ! C’est rapide et simple de réserver un voyage de groupe avec DonkeyAir.</p>
+            <p class="text-primary">Vous souhaitez voyager avec un groupe de plus de <?= Dataform::MAX_PASSENGERS; ?> personnes ? Pas de soucis ! C’est rapide et simple de réserver un voyage de groupe avec DonkeyAir.</p>
         </div>
         <div class="row justify-content-between">
             <div class="col-md-6 col-xl-4 mb-3 d-grid">
@@ -116,9 +124,17 @@
             </div>
         </div>
     <?php endif ?>
-    <?php
-        // var_dump($_GET['fail-message']);
-        // var_dump($_GET);
-
-    ?>
+    <div class="row">
+        <div class="col">
+            <?php
+            if (isset($_SESSION['fail-message'])) {
+                $_SESSION['fail-message'];
+                foreach ($_SESSION['fail-message'] as $key => $value) {
+                    echo "<p class=\"text-danger\">".$value ."</p>";
+                }
+            }
+            session_unset()
+            ?>
+        </div>
+    </div>
 </form>

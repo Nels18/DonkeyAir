@@ -100,10 +100,3 @@ window.onload = function () {
   // console.log(request);
   showReturn();
 };
-
-
-const fp = flatpickr("#myID", {}); // flatpickr
-const myInput = document.querySelector(".myInput");
-const fp = flatpickr(myInput, {});  // flatpickr
-const calendars = flatpickr(".calendar", {});
-calendars[0] // flatpickr
