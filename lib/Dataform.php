@@ -30,7 +30,7 @@ class Dataform
     public function testData(array $data) :array
     {
         foreach ($data as $key => $value) {
-            $value = testInput(isset($data[$key]));
+            $value = $this->testInput(isset($data[$key]));
         }
 
         return $data;

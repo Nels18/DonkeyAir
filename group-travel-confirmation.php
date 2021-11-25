@@ -1,12 +1,9 @@
 <?php
     session_start();
-    require_once "lib/functions.php";
     require_once "lib/Dataform.php";
     require_once "lib/Validator.php";
 
     $dataForm = Dataform::getInstance($_GET);
-    testData($dataForm);
-
     $valuesForm = [
         'city-start' => $dataForm->getValue('city-start'),
         'city-to' => $dataForm->getValue('city-to'),
@@ -16,11 +13,23 @@
         'trip-type' => $dataForm->getValue('trip-type'),
         'number-of-passenger' =>$dataForm->getValue('number-of-passenger'),
     ];
+    var_dump($valuesForm);
+    // $valuesForm = [
+    //     'city-start' => $dataForm->getValue('city-start'),
+    //     'city-to' => $dataForm->getValue('city-to'),
+    //     'departure-date' => $dataForm->getValue('departure-date'),
+    //     'return-date' => $dataForm->getValue('return-date'),
+    //     'trip-class' => $dataForm->getValue('trip-class'),
+    //     'trip-type' => $dataForm->getValue('trip-type'),
+    //     'number-of-passenger' =>$dataForm->getValue('number-of-passenger'),
+    // ];
+    $dataForm->testData($valuesForm);
+
     $validatorForm = new Validator($valuesForm);
     $_SESSION['fail-message'] = $validatorForm->getErrors(array_keys($valuesForm));
-    if (!empty($_SESSION['fail-message'])) {
-        header('Location: group-travel.php');
-    }
+    // if (!empty($_SESSION['fail-message'])) {
+    //     header('Location: group-travel.php');
+    // }
 
     setlocale(LC_TIME, 'fr','fr_FR','fr_FR@euro','fr_FR.utf8','fr-FR','fra');
 
