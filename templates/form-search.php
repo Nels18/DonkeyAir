@@ -27,7 +27,6 @@
         <div class="col mb-3">
             <label for="departure-date" class="form-label">Départ le </label>
             <div class="flatpickr">
-                <input class="" type="text" placeholder="Select Date.." data-input> <!-- input is mandatory -->
 
                 <a class="input-button" title="toggle" data-toggle>
                     <i class="icon-calendar"></i>
@@ -112,7 +111,7 @@
                 <a href="group-travel.php" class="btn btn-outline-primary btn-lg px-5 my-3">Demander un devis</a>
             </div>
             <div class="col-md-6 col-xl-4 mb-3 d-grid">
-                <button type="submit" class="btn btn-primary btn-lg px-5 my-3">Rechercher les vols</button>
+                <a href="to_book.php" type="submit" class="btn btn-primary btn-lg px-5 my-3">Rechercher les vols</a>
             </div>
         </div>
     <?php endif ?>
