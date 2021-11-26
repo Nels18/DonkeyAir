@@ -1,11 +1,14 @@
 <?php
 session_start();
 
+require_once "_connect.php";
 require_once "lib/Dataform.php";
+require_once 'lib/Database.php';
+
 
 $dataform = Dataform::getInstance($_GET);
 // print_r($dataform);
-print_r($_GET);
+// print_r($_GET);
 
 $_GET['test'] = [
     [
@@ -29,6 +32,61 @@ $_GET['test1'] = [
 // print_r($_GET);
 
 $searchTrip = $_GET['trip-type'];
+
+$cityStart = substr($_GET['city-start'], 0, 3);
+
+$cityTo = substr($_GET['city-to'], 0, 3);
+
+$requestPriceOutbound = "SELECT price FROM airport 
+LEFT JOIN flight ON airport.code = airport_from_code 
+WHERE code = '$cityStart'";
+
+$requestPriceReturn = "SELECT price FROM airport 
+LEFT JOIN flight ON airport.code = airport_to_code 
+WHERE code = '$cityTo'";
+
+$requestOutboundFlightID = "SELECT id FROM airport 
+LEFT JOIN flight ON airport.code = airport_from_code 
+WHERE code = '$cityStart'";
+
+$requestReturnFlightID = "SELECT id FROM airport 
+LEFT JOIN flight ON airport.code = airport_to_code 
+WHERE code = '$cityTo'";
+
+$requestAvailableOutboundFlight = "SELECT a.name airport_name, f.airport_from_code, c.name country_name, f.price, f.departure_date, f.arrival_date
+FROM flight f
+INNER JOIN airport a ON a.code = f.airport_from_code
+INNER JOIN country c ON c.code = a.country_code
+WHERE f.airport_from_code = '$cityStart'";
+
+$requestAvailableReturnFlight = "SELECT a.name airport_name, f.airport_to_code, c.name country_name, f.price, f.departure_date, f.arrival_date
+FROM flight f
+INNER JOIN airport a ON a.code = f.airport_to_code
+INNER JOIN country c ON c.code = a.country_code
+WHERE f.airport_to_code = '$cityTo'";
+
+$resultPriceOutbound = Database::getInstance()->query($requestPriceOutbound);
+$resultPriceReturn = Database::getInstance()->query($requestPriceReturn);
+$resultOutboundFlightID = Database::getInstance()->query($requestOutboundFlightID);
+$resultReturnFlightID = Database::getInstance()->query($requestReturnFlightID);
+
+$resultAvailableOutboundFlight = Database::getInstance()->query($requestAvailableOutboundFlight);
+// strftime('%a. %d %b %G',strtotime($valuesForm['departure-date']))
+// setlocale(LC_TIME, "fr_FR");
+// var_dump(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[0]['departure_date'])));
+// var_dump(strftime('%H:%M',strtotime($resultAvailableOutboundFlight[0]['departure_date'])));
+
+$resultAvailableReturnFlight = Database::getInstance()->query($requestAvailableReturnFlight);
+// strftime('%a. %d %b %G',strtotime($valuesForm['arrival-date']))
+// var_dump(strftime('%a. %d %b %G',strtotime($resultAvailableReturnFlight[0]['arrival_date'])));
+// var_dump(strftime('%H:%M',strtotime($resultAvailableReturnFlight[0]['departure_date'])));
+
+$departureTimeOutboundFlight = strftime('%H%M',strtotime($resultAvailableOutboundFlight[0]['departure_date']));
+$arrivalTimeOutboundFlight = strftime('%H%M',strtotime($resultAvailableOutboundFlight[0]['arrival_date']));
+$departureTimeReturnFlight = strftime('%H%M',strtotime($resultAvailableReturnFlight[0]['departure_date']));
+$arrivalTimeReturnFlight = strftime('%H%M',strtotime($resultAvailableReturnFlight[0]['arrival_date']));
+$idOutboundFlight = $resultOutboundFlightID[0]['id'];
+$idReturnFlight = $resultReturnFlightID[0]['id'];
 
 ?>
 
@@ -61,7 +119,7 @@ $searchTrip = $_GET['trip-type'];
                             <p><?php echo $_GET['city-start']?> <i class="fas fa-arrow-right"></i> <?php echo $_GET['city-to']?></p>
                         </div>
                     </div>
-            
+
                     <div id="carouselExampleControls" class="carousel p-5" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             <?php for ($i=0; $i<30; $i++){ ?>
@@ -83,12 +141,38 @@ $searchTrip = $_GET['trip-type'];
                                                     Non disponible
                                                 </div>
                                             <?php } ?></p>
-                                        <a href="#date" class="btn btn-primary" onclick="getValue();">Sélectionner</a>
+                                            <button class="btn btn-primary" type="button" id="btn-select-<?php echo $i+1 ?>"onclick="getValue();">Sélectionner</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <?php } ?>  
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="card-title card-header">
+                                    <div>
+                                        <?php echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[0]['departure_date']))); ?>
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-clock"></i> 
+                                        <?php echo(strftime('%H:%M',strtotime($resultAvailableOutboundFlight[0]['departure_date']))); ?>
+                                        <i class="fas fa-plane"></i> 
+                                        <?php echo(strftime('%H:%M',strtotime($resultAvailableOutboundFlight[0]['arrival_date']))); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="card-title card-header">
+                                    <div>
+                                        Numéro de vol: 
+                                        <?php echo $cityStart.$cityTo.$departureTimeOutboundFlight.$arrivalTimeReturnFlight.$idOutboundFlight; ?>
+                                    </div>
+                                    <div>
+                                        <?php echo $resultPriceOutbound[0]['price'] . ' €' ?>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
                         <button class="carousel-control-prev m-3" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
@@ -107,8 +191,8 @@ $searchTrip = $_GET['trip-type'];
                             <div class="return-flight">
                                 <h3 class="card-title card-header text-white bg-primary"><i class="fas fa-plane"></i> Vol retour</h3>
                                 <div class="card-title card-header">
-                                <p><?php echo $_GET['city-to']?> <i class="fas fa-arrow-right"></i> <?php echo $_GET['city-start']?></p>
-                            </div>
+                                    <p><?php echo $_GET['city-to']?> <i class="fas fa-arrow-right"></i> <?php echo $_GET['city-start']?></p>
+                                </div>
                             </div>
                             <div id="carouselExampleControls2" class="carousel p-5" data-bs-ride="carousel">
                                 <div class="carousel-inner">
@@ -130,11 +214,39 @@ $searchTrip = $_GET['trip-type'];
                                                         Non disponible
                                                     </div>
                                                 <?php } ?></p>
-                                                <a href="#" class="btn btn-primary" onclick="myFunction()">Sélectionner</a>
+                                                <button class="btn btn-primary" type="button" onclick="getValue();">Sélectionner</button>
                                             </div>
                                         </div>
                                     </div>
                                     <?php } ?>  
+                                </div>
+                                <div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="card-title card-header">
+                                                <div>
+                                                    <?php echo(strftime('%a. %d %b %G',strtotime($resultAvailableReturnFlight[0]['departure_date']))); ?>
+                                                </div>
+                                                <div>
+                                                    <i class="fas fa-clock"></i> 
+                                                    <?php echo(strftime('%H:%M',strtotime($resultAvailableReturnFlight[0]['departure_date']))); ?>
+                                                    <i class="fas fa-plane"></i> 
+                                                    <?php echo(strftime('%H:%M',strtotime($resultAvailableReturnFlight[0]['arrival_date']))); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="card-title card-header">
+                                                <div>
+                                                    Numéro de vol: 
+                                                    <?php echo $cityTo.$cityStart.$departureTimeReturnFlight.$arrivalTimeReturnFlight.$idReturnFlight; ?>
+                                                </div>
+                                                <div>
+                                                    <?php echo $resultPriceReturn[0]['price'] . ' €' ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <button class="carousel-control-prev m-3" type="button" data-bs-target="#carouselExampleControls2" data-bs-slide="prev">

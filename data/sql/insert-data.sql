@@ -41,8 +41,8 @@ VALUES
 INSERT INTO `class` (`name`,`multiplier_coefficient`)
 VALUES
   ("Économique", 1),
-	("Affaire", 5),
-  ("Première", 30);
+	("Affaire", 2),
+  ("Première", 4);
   
 
 -- -----------------------------------------------------

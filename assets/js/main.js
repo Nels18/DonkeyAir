@@ -103,8 +103,15 @@ window.onload = function () {
 
 /* Carousel */
 
-const date = document.querySelector("#date");
-date.setAttribute("", "selected");
-date.addEventListener("add", function(event){
-  date.setAttribute("",date.value);
-})
+// var button = document.getElementById('show_button')
+// button.addEventListener('click',hideshow,false);
+
+// function hideshow() {
+//   document.getElementById('hidden-div').style.display = 'block'; 
+//   this.style.display = 'none'
+// }
+
+function changeBackgroundColor(newColor) {
+  var elem = document.getElementById('btn-select-');
+  elem.style.color = newColor;
+}
