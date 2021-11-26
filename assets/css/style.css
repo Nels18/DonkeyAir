@@ -39,14 +39,6 @@ label {
     box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
 }
 
-h3.card-header, .btn {
-    background-color: rgba(233,86,35,255);
-}
-
-.card-header {
-    background-color: rgba(233,86,35,255);
-}
-
 .carousel-control-prev,
 .carousel-control-next {
     background-color: #e1e1e1;

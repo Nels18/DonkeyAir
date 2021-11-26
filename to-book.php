@@ -54,26 +54,21 @@ $searchTrip = $_GET['trip-type'];
         <div class="row justify-content-center">
             <div class="col-10 card p-5 m-5 rounded-3">
                 <h2>Sélectionner vos vols</h2>
-                <div class="card m-5 p-5">
+                <div class="card m-5">
                     <div class="outbound-flight">
-                        <h3 class="card-title card-header text-white"><i class="fas fa-plane"></i> Vol aller:</h3>
-                        <div class="card-title card-header text-white">
-                            <p><?php echo $_GET['city-start']?></p>
-                            <p><?php echo $_GET['city-to']?></p>
+                        <h3 class="card-title card-header text-white bg-primary"><i class="fas fa-plane"></i> Vol aller</h3>
+                        <div class="card-title card-header">
+                            <p><?php echo $_GET['city-start']?> <i class="fas fa-arrow-right"></i> <?php echo $_GET['city-to']?></p>
                         </div>
                     </div>
             
-                    <div id="carouselExampleControls" class="carousel" data-bs-ride="carousel">
+                    <div id="carouselExampleControls" class="carousel p-5" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             <?php for ($i=0; $i<30; $i++){ ?>
-                                <?php setlocale(LC_TIME, "fr_FR"); 
-                                echo strftime('%a. %d %b %G',strtotime($_GET['departure-date']));
-                                    if ($_GET['test'][0]['date-selected'] == (strftime('%a', strtotime("$i day")) . '. ' . strftime('%d', strtotime("$i day")))){   
-                                }?>
                             <div class="carousel-item active">
                                 <div class="card card-item bg-light shadow-sm">
                                     <div class="card card-item bg-light shadow-sm">
-                                        <h4 class="card-header text-white">
+                                        <h4 class="card-header text-white bg-primary">
                                         <?php setlocale(LC_TIME, "fr_FR"); 
                                             echo strftime('%a. %d %b %Y', strtotime("$i day"));
                                         ?>
@@ -88,7 +83,7 @@ $searchTrip = $_GET['trip-type'];
                                                     Non disponible
                                                 </div>
                                             <?php } ?></p>
-                                        <a href="#" class="btn text-white" onclick="getValue();">Sélectionner</a>
+                                        <a href="#date" class="btn btn-primary" onclick="getValue();">Sélectionner</a>
                                         </div>
                                     </div>
                                 </div>
@@ -96,32 +91,31 @@ $searchTrip = $_GET['trip-type'];
                             <?php } ?>  
                         </div>
                         
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <button class="carousel-control-prev m-3" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <button class="carousel-control-next m-3" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
                     </div>
                 </div>
                 <?php if ('round-trip' == $searchTrip):?>
-                    <div class="card m-5 p-5">
+                    <div class="card m-5">
                         <div class="return">
                             <div class="return-flight">
-                                <h3 class="card-title card-header text-white"><i class="fas fa-plane"></i> Vol aller:</h3>
-                                <div class="card-title card-header text-white">
-                                <p><?php echo $_GET['city-to']?></p>
-                                <p><?php echo $_GET['city-start']?></p>
+                                <h3 class="card-title card-header text-white bg-primary"><i class="fas fa-plane"></i> Vol retour</h3>
+                                <div class="card-title card-header">
+                                <p><?php echo $_GET['city-to']?> <i class="fas fa-arrow-right"></i> <?php echo $_GET['city-start']?></p>
                             </div>
                             </div>
-                            <div id="carouselExampleControls2" class="carousel" data-bs-ride="carousel">
+                            <div id="carouselExampleControls2" class="carousel p-5" data-bs-ride="carousel">
                                 <div class="carousel-inner">
                                     <?php for ($i=0; $i<30; $i++){ ?>
                                     <div class="carousel-item active">
                                         <div class="card card-item bg-light shadow-sm">
-                                            <h4 class="card-header text-white">
+                                            <h4 class="card-header text-white bg-primary">
                                             <?php setlocale(LC_TIME, "fr_FR"); 
                                                 echo strftime('%a. %d %b %Y', strtotime("$i day"));
                                             ?>
@@ -136,18 +130,18 @@ $searchTrip = $_GET['trip-type'];
                                                         Non disponible
                                                     </div>
                                                 <?php } ?></p>
-                                                <a href="#" class="btn text-white" onclick="myFunction()">Sélectionner</a>
+                                                <a href="#" class="btn btn-primary" onclick="myFunction()">Sélectionner</a>
                                             </div>
                                         </div>
                                     </div>
                                     <?php } ?>  
                                 </div>
 
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls2" data-bs-slide="prev">
+                                <button class="carousel-control-prev m-3" type="button" data-bs-target="#carouselExampleControls2" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls2" data-bs-slide="next">
+                                <button class="carousel-control-next m-3" type="button" data-bs-target="#carouselExampleControls2" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>

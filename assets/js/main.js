@@ -103,5 +103,8 @@ window.onload = function () {
 
 /* Carousel */
 
-var date = document.getElementById("date");
-date.options[date.options.selectedIndex].selected = true;
+const date = document.querySelector("#date");
+date.setAttribute("", "selected");
+date.addEventListener("add", function(event){
+  date.setAttribute("",date.value);
+})
