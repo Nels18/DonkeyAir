@@ -100,3 +100,8 @@ window.onload = function () {
   // console.log(request);
   showReturn();
 };
+
+/* Carousel */
+
+var date = document.getElementById("date");
+date.options[date.options.selectedIndex].selected = true;

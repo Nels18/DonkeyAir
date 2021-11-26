@@ -38,12 +38,11 @@ VALUES
 -- -----------------------------------------------------
 
 
-INSERT INTO `class` (`name`,`multiplier_coefficient`,`additional_luggage`,`modifiable_ticket`,`
-`,`refundable_ticket`)
+INSERT INTO `class` (`name`,`multiplier_coefficient`)
 VALUES
-  ("Économique", 1,false,false,false),
-	("Affaire", 5,true,true,false),
-  ("Première", 30,true,true,true);
+  ("Économique", 1),
+	("Affaire", 5),
+  ("Première", 30);
   
 
 -- -----------------------------------------------------
@@ -51,11 +50,11 @@ VALUES
 -- -----------------------------------------------------
 
 
-INSERT INTO `option` (`name`,`multiplier_coefficient`) 
+INSERT INTO `option` (`name`,`multiplier_coefficient`,`additional_luggage`,`modifiable_ticket`,`refundable_ticket`) 
 VALUES
-  ("Basic", 1),
-  ("Plus", 1.3),
-  ("Max", 1.8);
+  ("Basic", 1,0,0,0),
+  ("Plus", 1.3,1,1,0),
+  ("Max", 1.8,1,1,1);
 
 
 -- -----------------------------------------------------

@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require_once "lib/Dataform.php";
 
 $dataform = Dataform::getInstance($_GET);
@@ -69,14 +71,11 @@ $searchTrip = $_GET['trip-type'];
                                     if ($_GET['test'][0]['date-selected'] == (strftime('%a', strtotime("$i day")) . '. ' . strftime('%d', strtotime("$i day")))){   
                                 }?>
                             <div class="carousel-item active">
-                                <div class="card card-item bg-light shadow-sm" onclick="changeCardBackgroundColor()">
+                                <div class="card card-item bg-light shadow-sm">
                                     <div class="card card-item bg-light shadow-sm">
                                         <h4 class="card-header text-white">
                                         <?php setlocale(LC_TIME, "fr_FR"); 
-                                            echo strftime('%a', strtotime("$i day")) . ". "; 
-                                            echo strftime('%d', strtotime("$i day")) . " ";
-                                            echo strftime('%b', strtotime("$i day")) . " "; 
-                                            echo strftime('%Y');
+                                            echo strftime('%a. %d %b %Y', strtotime("$i day"));
                                         ?>
                                         </h4>
                                         <div class="card-body">
@@ -123,12 +122,9 @@ $searchTrip = $_GET['trip-type'];
                                     <div class="carousel-item active">
                                         <div class="card card-item bg-light shadow-sm">
                                             <h4 class="card-header text-white">
-                                                <?php setlocale(LC_TIME, "fr_FR"); 
-                                                    echo strftime('%a', strtotime("$i day")) . ". "; 
-                                                    echo strftime('%d', strtotime("$i day")) . " ";
-                                                    echo strftime('%b', strtotime("$i day")) . " "; 
-                                                    echo strftime('%Y');
-                                                ?>
+                                            <?php setlocale(LC_TIME, "fr_FR"); 
+                                                echo strftime('%a. %d %b %Y', strtotime("$i day"));
+                                            ?>
                                             </h4>
                                             <div class="card-body">
                                                 <p class="card-text">
