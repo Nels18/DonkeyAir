@@ -13,6 +13,30 @@ VALUES
 
 
 -- -----------------------------------------------------
+-- Add data in table `donkeyair`.`class`
+-- -----------------------------------------------------
+
+
+INSERT INTO `class` (`name`,`multiplier_coefficient`)
+VALUES
+  ("Économique", 1),
+	("Affaire", 2),
+  ("Première", 4);
+  
+
+-- -----------------------------------------------------
+-- Add data in table donkeyair.option
+-- -----------------------------------------------------
+
+
+INSERT INTO `option` (name,`multiplier_coefficient`,`additional_luggage`,`modifiable_ticket`,`refundable_ticket`) 
+VALUES
+  ("Basic", 1,0,0,0),
+  ("Plus", 1.03,1,1,0),
+  ("Max", 1.08,1,1,1);
+
+
+  -- -----------------------------------------------------
 -- Add data in table `donkeyair`.`booking`
 -- -----------------------------------------------------
 
@@ -30,31 +54,6 @@ VALUES
   (4,3),
   (3,1),
   (4,2);
-
-
-
--- -----------------------------------------------------
--- Add data in table `donkeyair`.`class`
--- -----------------------------------------------------
-
-
-INSERT INTO `class` (`name`,`multiplier_coefficient`)
-VALUES
-  ("Économique", 1),
-	("Affaire", 5),
-  ("Première", 30);
-  
-
--- -----------------------------------------------------
--- Add data in table donkeyair.option
--- -----------------------------------------------------
-
-
-INSERT INTO `option` (name,`multiplier_coefficient`,`additional_luggage`,`modifiable_ticket`,`refundable_ticket`) 
-VALUES
-  ("Basic", 1,0,0,0),
-  ("Plus", 1.3,1,1,0),
-  ("Max", 1.8,1,1,1);
 
 
 -- -----------------------------------------------------
