@@ -17,10 +17,8 @@ $valuesForm = [
 if ('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])):
 ;?>
 <form action="group-travel-confirmation.php" method="get">
-<!-- <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get"> -->
 <?php else: ;?>
 <form action="to-book.php" method="get">
-<!-- <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="get"> -->
 <?php endif ;?>
     <div class="mb-3">
         <label for="city-start" class="form-label">De</label>

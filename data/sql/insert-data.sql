@@ -46,11 +46,11 @@ VALUES
   
 
 -- -----------------------------------------------------
--- Add data in table `donkeyair`.`option`
+-- Add data in table donkeyair.option
 -- -----------------------------------------------------
 
 
-INSERT INTO `option` (`name`,`multiplier_coefficient`,`additional_luggage`,`modifiable_ticket`,`refundable_ticket`) 
+INSERT INTO `option` (name,`multiplier_coefficient`,`additional_luggage`,`modifiable_ticket`,`refundable_ticket`) 
 VALUES
   ("Basic", 1,0,0,0),
   ("Plus", 1.3,1,1,0),
