@@ -6,6 +6,8 @@ main.bg-image{
     background-position: center;
 }
 
+/* Form search */
+
 .hidden {
     display: none;
     opacity: 0;
@@ -47,6 +49,13 @@ label {
     border-radius: 50%;
     top: 50%;
     transform: translateY(-50%);
+}
+
+/* Confirmation */
+
+.customer-header {
+    font-size: 1.3rem;
+    font-weight: 600;
 }
 
 @media (min-width: 768px) {

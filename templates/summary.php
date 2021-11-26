@@ -73,8 +73,8 @@
                 <div class="row justify-content-md-center border-top">
                     <h3 class="my-3">Récapitulatif</h3>
                     <?php if ('/confirmation.php' == htmlspecialchars($_SERVER["PHP_SELF"])): ;?>
-                        <p>
-                            <?php echo $user['title'] . " " . $user['first_name'] . " " . $user['last_name']; ?>
+                        <p class="customer-header">
+                            <?php echo $user['title'] . ". " . $user['first_name'] . " " . $user['last_name']; ?>
                         </p>
                     <?php endif ;?>
                     <div class="col<?php
@@ -145,7 +145,9 @@
                 <?php if ('/confirmation.php' == htmlspecialchars($_SERVER["PHP_SELF"])): ;?>
                     <div class="row justify-content-end">
                         <div class="col-md-6 col-xl-4 my-3 d-grid">
-                            <button type="submit" class="btn btn-primary btn-lg px-5 my-3">Confirmer votre réservation</button>
+                            <a href="create-booking.php">
+                                <button class="btn btn-primary btn-lg px-5 my-3">Confirmer votre réservation</button>
+                            </a>
                         </div>
                     </div>
                 <?php endif ;?>

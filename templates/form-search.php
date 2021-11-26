@@ -73,17 +73,19 @@ if ('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])):
             <label for="trip-class" class="form-label">Classe</label>
             <select class="form-select" id="trip-class" name="trip-class">
                 <option value="Économique" <?php
-                if ("economy-class" == isset($valuesForm['trip-class']) || empty($valuesForm['trip-class'])) {
+                if ("Économique" == isset($valuesForm['trip-class']) || empty($valuesForm['trip-class'])) {
                     echo "selected";
-                };?> ><?php echo 'economy-class'; ?></option>
+                };?> ><?php echo 'Économique'; ?></option>
+
                 <option value="business-class" <?php
                 if ("Affaire" == isset($valuesForm['trip-class'])) {
                     "selected";
-                };?> ><?php echo 'business-class'; ?></option>
-                <option value="firts-class" <?php 
-                if ("firts-class" == isset($valuesForm['trip-class'])) {
+                };?> ><?php echo 'Affaire'; ?></option>
+
+                <option value="Première" <?php 
+                if ("Première" == isset($valuesForm['trip-class'])) {
                     "Première";
-                };?> ><?php echo 'firts-class'; ?></option>
+                };?> ><?php echo 'Premières'; ?></option>
             </select>
         </div>
         <div class="col-md col-xl-4 mb-3">
