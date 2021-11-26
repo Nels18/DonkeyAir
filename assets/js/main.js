@@ -100,3 +100,11 @@ window.onload = function () {
   // console.log(request);
   showReturn();
 };
+
+/* Carousel */
+
+const date = document.querySelector("#date");
+date.setAttribute("", "selected");
+date.addEventListener("add", function(event){
+  date.setAttribute("",date.value);
+})

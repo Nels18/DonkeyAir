@@ -118,7 +118,7 @@ if ('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])):
                 <a href="group-travel.php" class="btn btn-outline-primary btn-lg px-5 my-3">Demander un devis</a>
             </div>
             <div class="col-md-6 col-xl-4 mb-3 d-grid">
-                <a href="to_book.php" type="submit" class="btn btn-primary btn-lg px-5 my-3">Rechercher les vols</a>
+                <button type="submit" class="btn btn-primary btn-lg px-5 my-3">Rechercher les vols</button>
             </div>
         </div>
     <?php endif ?>

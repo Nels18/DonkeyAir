@@ -47,7 +47,7 @@
         <title>DonkeyAir</title>
     </head>
     <body>
-        <?php include("/templates/summary.php"); ?>
+        <?php include("templates/summary.php"); ?>
     <script src="assets/js/main.js"></script>
     </body>
 </html>

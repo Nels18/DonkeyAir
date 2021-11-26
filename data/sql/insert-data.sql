@@ -38,12 +38,12 @@ VALUES
 -- -----------------------------------------------------
 
 
-INSERT INTO `class` (name,`multiplier_coefficient`)
+INSERT INTO `class` (`name`,`multiplier_coefficient`)
 VALUES
   ("Économique", 1),
-    ("Affaire", 5),
+	("Affaire", 5),
   ("Première", 30);
-
+  
 
 -- -----------------------------------------------------
 -- Add data in table donkeyair.option
