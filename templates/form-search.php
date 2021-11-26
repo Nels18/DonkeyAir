@@ -72,18 +72,18 @@ if ('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])):
         <div class="col-md-6 col-xl-4 mb-3">
             <label for="trip-class" class="form-label">Classe</label>
             <select class="form-select" id="trip-class" name="trip-class">
-                <option value="economy-class" <?php
+                <option value="Économique" <?php
                 if ("economy-class" == isset($valuesForm['trip-class']) || empty($valuesForm['trip-class'])) {
                     echo "selected";
-                };?> ><?php echo Dataform::translateTripClass('economy-class'); ?></option>
+                };?> ><?php echo 'economy-class'; ?></option>
                 <option value="business-class" <?php
-                if ("business-class" == isset($valuesForm['trip-class'])) {
+                if ("Affaire" == isset($valuesForm['trip-class'])) {
                     "selected";
-                };?> ><?php echo Dataform::translateTripClass('business-class'); ?></option>
+                };?> ><?php echo 'business-class'; ?></option>
                 <option value="firts-class" <?php 
                 if ("firts-class" == isset($valuesForm['trip-class'])) {
-                    "selected";
-                };?> ><?php echo Dataform::translateTripClass('firts-class'); ?></option>
+                    "Première";
+                };?> ><?php echo 'firts-class'; ?></option>
             </select>
         </div>
         <div class="col-md col-xl-4 mb-3">
@@ -106,7 +106,7 @@ if ('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])):
     <?php if('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])): ?>
     <div class="row justify-content-end">
         <div class="col-md-6 col-xl-4 mb-3 d-grid">
-            <button type="submit" class="btn btn-primary btn-lg px-5 my-3">confirmer</button>
+            <button type="submit" class="btn btn-primary btn-lg px-5 my-3">Confirmer</button>
         </div>
     </div>
     <?php else: ?>

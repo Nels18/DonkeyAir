@@ -10,7 +10,7 @@ class Dataform
 
     public function __construct($data = array())
     {
-        $this->data = $data;
+        $this->data = $this->testData($data);
     }
 
     public function getValue(string $index)
