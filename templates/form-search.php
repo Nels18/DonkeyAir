@@ -80,10 +80,10 @@ if ('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])):
                 if ("business-class" == isset($valuesForm['trip-class'])) {
                     "selected";
                 };?> ><?php echo Dataform::translateTripClass('business-class'); ?></option>
-                <option value="firts-class" <?php 
-                if ("firts-class" == isset($valuesForm['trip-class'])) {
+                <option value="first-class" <?php 
+                if ("first-class" == isset($valuesForm['trip-class'])) {
                     "selected";
-                };?> ><?php echo Dataform::translateTripClass('firts-class'); ?></option>
+                };?> ><?php echo Dataform::translateTripClass('first-class'); ?></option>
             </select>
         </div>
         <div class="col-md col-xl-4 mb-3">
