@@ -72,18 +72,20 @@ if ('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])):
         <div class="col-md-6 col-xl-4 mb-3">
             <label for="trip-class" class="form-label">Classe</label>
             <select class="form-select" id="trip-class" name="trip-class">
-                <option value="economy-class" <?php
-                if ("economy-class" == isset($valuesForm['trip-class']) || empty($valuesForm['trip-class'])) {
+                <option value="Économique" <?php
+                if ("Économique" == isset($valuesForm['trip-class']) || empty($valuesForm['trip-class'])) {
                     echo "selected";
-                };?> ><?php echo Dataform::translateTripClass('economy-class'); ?></option>
+                };?> ><?php echo 'Économique'; ?></option>
+
                 <option value="business-class" <?php
-                if ("business-class" == isset($valuesForm['trip-class'])) {
+                if ("Affaire" == isset($valuesForm['trip-class'])) {
                     "selected";
-                };?> ><?php echo Dataform::translateTripClass('business-class'); ?></option>
-                <option value="first-class" <?php 
-                if ("first-class" == isset($valuesForm['trip-class'])) {
-                    "selected";
-                };?> ><?php echo Dataform::translateTripClass('first-class'); ?></option>
+                };?> ><?php echo 'Affaire'; ?></option>
+
+                <option value="Première" <?php 
+                if ("Première" == isset($valuesForm['trip-class'])) {
+                    "Première";
+                };?> ><?php echo 'Premières'; ?></option>
             </select>
         </div>
         <div class="col-md col-xl-4 mb-3">
@@ -106,7 +108,7 @@ if ('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])):
     <?php if('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])): ?>
     <div class="row justify-content-end">
         <div class="col-md-6 col-xl-4 mb-3 d-grid">
-            <button type="submit" class="btn btn-primary btn-lg px-5 my-3">confirmer</button>
+            <button type="submit" class="btn btn-primary btn-lg px-5 my-3">Confirmer</button>
         </div>
     </div>
     <?php else: ?>

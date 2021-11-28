@@ -8,9 +8,9 @@ class Dataform
     private static ?Dataform $instance = null;
 
 
-    public function __construct($data = array())
+    public function __construct(array $data)
     {
-        $this->data = $data;
+        $this->data = $this->testData($data);
     }
 
     public function getValue(string $index)
