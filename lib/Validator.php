@@ -63,7 +63,7 @@ class Validator
 
         if ('' !== $this->params['number-of-passenger'] && ('/group-travel-confirmation.php' !== htmlspecialchars($_SERVER["PHP_SELF"]))) {
             // echo 'rentre';
-            if (!array_key_exists('title-passenger-1',$this->params)) {
+            if (!array_key_exists('title-passenger-1',$this->params) && '/confirmation.php' == htmlspecialchars($_SERVER["PHP_SELF"])) {
                 if (substr($inputItem,0 ,strlen('title-passenger-')) == 'title-passenger-') {
                     // echo 'pas de pssg';
                     $this->errors['title-of-passenger'] = "La civilité du passger est requis.";
@@ -109,11 +109,7 @@ class Validator
     }
 
     public function getErrors () 
-    {
-        // if (condition) {
-        //     # code...
-        // }
-        
+    {   
         foreach (array_keys($this->params) as $inputItem) {
             $this->required($inputItem);
             if ('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])) {

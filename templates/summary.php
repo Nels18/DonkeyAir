@@ -10,9 +10,9 @@
     $isInConfirmationPage = ('/confirmation.php' == htmlspecialchars($_SERVER["PHP_SELF"]));
     $isInGroupTravelConfirmationPage = ('/group-travel-confirmation.php' == htmlspecialchars($_SERVER["PHP_SELF"]));
     if ($isInConfirmationPage) {
-        $dataForm = Dataform::getInstance($_POST)->getData();
-    } elseif ($isInGroupTravelConfirmationPage) {
         $dataForm = Dataform::getInstance($_GET)->getData();
+    } elseif ($isInGroupTravelConfirmationPage) {
+        $dataForm = Dataform::getInstance($_POST)->getData();
     }
 
     // if (!isset($dataForm)) {
@@ -22,18 +22,18 @@
     var_dump($dataForm) ;
         ### fake value from db
         
-        // $dataForm = [
-        //     'city-start' => 'AAE, Annaba Les Salines - Algeria',
-        //     'city-to' => 'KDH, Kandahar - Afghanistan',
-        //     'departure-from' => '2020-12-09 00:09:10',
-        //     'departure-to' => '2020-12-09 02:23:27',
-        //     'return-from' => '2021-11-23 14:29:04',
-        //     'return-to' => '2021-11-23 18:22:00',
-        //     'trip-class' => 'Économique',
-        //     'trip-option' => 'Plus',
-        //     'trip-type' => 'round-trip',
-        //     'number-of-passenger' => '3',
-        // ];
+        $dataForm = [
+            'city-start' => 'AAE, Annaba Les Salines - Algeria',
+            'city-to' => 'KDH, Kandahar - Afghanistan',
+            'departure-from' => '2020-12-09 00:09:10',
+            'departure-to' => '2020-12-09 02:23:27',
+            'return-from' => '2021-11-23 14:29:04',
+            'return-to' => '2021-11-23 18:22:00',
+            'trip-class' => 'Économique',
+            'trip-option' => 'Plus',
+            'trip-type' => 'round-trip',
+            'number-of-passenger' => '3',
+        ];
 
     $_SESSION['user-id'] = 1;
     $userId = $_SESSION['user-id'];

@@ -3,6 +3,7 @@ session_start();
 
 require_once("lib/Dataform.php");
 $data = Dataform::getInstance()->getData();
+var_dump($_SESSION);
 // var_dump($data);
 if (!empty($data)) {
     $valuesForm = [

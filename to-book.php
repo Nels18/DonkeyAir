@@ -1,25 +1,24 @@
 <?php
 session_start();
 
-require_once "_connect.php";
 require_once "lib/Dataform.php";
 require_once "lib/Validator.php";
 require_once 'lib/Database.php';
 
-setlocale(LC_TIME, 'fr','fr_FR','fr_FR@euro','fr_FR.utf8','fr-FR','fra');
-$dataform = Dataform::getInstance($_GET);
-// var_dump($dataform->data);
-var_dump($dataform->getData());
-$validatorForm = new Validator($dataform->getData());
-$_SESSION['fail-message'] = $validatorForm->getErrors(array_keys($dataform->getData()));
-var_dump($_SESSION);
-if (!empty($_SESSION['fail-message'])) {
-    header('Location: index.php');
-}
+// setlocale(LC_TIME, 'fr','fr_FR','fr_FR@euro','fr_FR.utf8','fr-FR','fra');
+// $dataform = Dataform::getInstance($_POST);
+// // var_dump($dataform->data);
+// var_dump($dataform->getData());
+// $validatorForm = new Validator($dataform->getData());
+// $_SESSION['fail-message'] = $validatorForm->getErrors(array_keys($dataform->getData()));
+// var_dump($_SESSION);
+// if (!empty($_SESSION['fail-message'])) {
+//     header('Location: index.php');
+// }
 // print_r($dataform);
-// print_r($_GET);
+// print_r($_POST);
 
-$_GET['test'] = [
+$_POST['test'] = [
     [
         'departure-city' => 'Paris',
         'arrival-city' => 'New-York',
@@ -29,7 +28,7 @@ $_GET['test'] = [
     ],
 ];
 
-$_GET['test1'] = [
+$_POST['test1'] = [
     [
         'departure-city' => 'Marseille',
         'arrival-city' => 'Moscou',
@@ -38,13 +37,13 @@ $_GET['test1'] = [
         'price' => ''
     ],
 ];
-// print_r($_GET);
+// print_r($_POST);
 
-$searchTrip = $_GET['trip-type'];
+$searchTrip = $_POST['trip-type'];
 
-$cityStart = substr($_GET['city-start'], 0, 3);
+$cityStart = substr($_POST['city-start'], 0, 3);
 
-$cityTo = substr($_GET['city-to'], 0, 3);
+$cityTo = substr($_POST['city-to'], 0, 3);
 
 $requestPriceOutbound = "SELECT price FROM airport 
 LEFT JOIN flight ON airport.code = airport_from_code 
@@ -80,6 +79,7 @@ $resultOutboundFlightID = Database::getInstance()->query($requestOutboundFlightI
 $resultReturnFlightID = Database::getInstance()->query($requestReturnFlightID);
 
 $resultAvailableOutboundFlight = Database::getInstance()->query($requestAvailableOutboundFlight);
+var_dump($resultAvailableOutboundFlight);
 // strftime('%a. %d %b %G',strtotime($valuesForm['departure-date']))
 // setlocale(LC_TIME, "fr_FR");
 // var_dump(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[0]['departure_date'])));
@@ -125,7 +125,7 @@ $idReturnFlight = $resultReturnFlightID[0]['id'];
                     <div class="outbound-flight">
                         <h3 class="card-title card-header text-white bg-primary"><i class="fas fa-plane"></i> Vol aller</h3>
                         <div class="card-title card-header">
-                            <p><?php echo $_GET['city-start']?> <i class="fas fa-arrow-right"></i> <?php echo $_GET['city-to']?></p>
+                            <p><?php echo $_POST['city-start']?> <i class="fas fa-arrow-right"></i> <?php echo $_POST['city-to']?></p>
                         </div>
                     </div>
 
@@ -142,9 +142,9 @@ $idReturnFlight = $resultReturnFlightID[0]['id'];
                                             </h4>
                                             <div class="card-body">
                                                 <p class="card-text">
-                                                    <?php if ($_GET['test'][0]['price'] != ''){ ?>
-                                                    <div class="card-body" type="submit" onclick="getValue();" id="test" value="<?php echo $_GET['test'][0]['price'] ?>">
-                                                        <?php echo 'à partir de ' .$_GET['test'][0]['price'] ?>
+                                                    <?php if ($_POST['test'][0]['price'] != ''){ ?>
+                                                    <div class="card-body" type="submit" onclick="getValue();" id="test" value="<?php echo $_POST['test'][0]['price'] ?>">
+                                                        <?php echo 'à partir de ' .$_POST['test'][0]['price'] ?>
                                                     </div>
                                                 <?php } else { ?><div class="card-body-grey" type="submit">
                                                         Non disponible
@@ -200,7 +200,7 @@ $idReturnFlight = $resultReturnFlightID[0]['id'];
                             <div class="return-flight">
                                 <h3 class="card-title card-header text-white bg-primary"><i class="fas fa-plane"></i> Vol retour</h3>
                                 <div class="card-title card-header">
-                                    <p><?php echo $_GET['city-to']?> <i class="fas fa-arrow-right"></i> <?php echo $_GET['city-start']?></p>
+                                    <p><?php echo $_POST['city-to']?> <i class="fas fa-arrow-right"></i> <?php echo $_POST['city-start']?></p>
                                 </div>
                             </div>
                             <div id="carouselExampleControls2" class="carousel p-5" data-bs-ride="carousel">
@@ -215,9 +215,9 @@ $idReturnFlight = $resultReturnFlightID[0]['id'];
                                             </h4>
                                             <div class="card-body">
                                                 <p class="card-text">
-                                                    <?php if ($_GET['test'][0]['price'] != ''){ ?>
-                                                    <div class="card-body" type="submit" onclick="getValue();" id="test" value="<?php echo $_GET['test'][0]['price'] ?>">
-                                                        <?php echo 'à partir de ' . $_GET['test'][0]['price'] ?>
+                                                    <?php if ($_POST['test'][0]['price'] != ''){ ?>
+                                                    <div class="card-body" type="submit" onclick="getValue();" id="test" value="<?php echo $_POST['test'][0]['price'] ?>">
+                                                        <?php echo 'à partir de ' . $_POST['test'][0]['price'] ?>
                                                     </div>
                                                 <?php } else { ?><div class="card-body-grey" type="submit">
                                                         Non disponible
