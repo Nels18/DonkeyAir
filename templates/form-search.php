@@ -2,23 +2,28 @@
 session_start();
 
 require_once("lib/Dataform.php");
-
-$valuesForm = [
-    'city-start' => Dataform::getInstance()->getValue('city-start'),
-    'city-to' => Dataform::getInstance()->getValue('city-to'),
-    'departure-date' => Dataform::getInstance()->getValue('departure-date'),
-    'return-date' => Dataform::getInstance()->getValue('return-date'),
-    'trip-class' => Dataform::getInstance()->getValue('trip-class'),
-    'trip-type' => Dataform::getInstance()->getValue('trip-type'),
-    'number-of-passenger' => intval(Dataform::getInstance()->getValue('number-of-passenger')),
-];
+$data = Dataform::getInstance()->getData();
+var_dump($_SESSION);
+// var_dump($data);
+if (!empty($data)) {
+    $valuesForm = [
+        'city-start' => $data['city-start'],
+        'city-to' => $data['city-to'],
+        'departure-date' => $data['departure-date'],
+        'return-date' => $data['return-date'],
+        'trip-class' => $data['trip-class'],
+        'trip-type' => $data['trip-type'],
+        'number-of-passenger' => $data['number-of-passenger'],
+    ];
+    var_dump($valuesForm);
+}
 
 
 if ('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])):
 ;?>
-<form action="group-travel-confirmation.php" method="get">
+<form class="form-search" action="group-travel-confirmation.php" method="post">
 <?php else: ;?>
-<form action="to-book.php" method="get">
+<form class="form-search" action="to-book.php" method="post">
 <?php endif ;?>
     <div class="mb-3">
         <label for="city-start" class="form-label">De</label>
@@ -99,10 +104,8 @@ if ('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])):
                     }
 
                     if ('/index.php' == htmlspecialchars($_SERVER["PHP_SELF"])) {
-                        echo "max=\"12\"";
-                        echo "value=\"" . $valuesForm['number-of-passenger'] . "\"";
-                    }
-                ?>
+                        echo "max=\"12\" value=\"" . isset($valuesForm['number-of-passenger']) . "\"";
+                    }?>
             required >
     </div>
     <?php if('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])): ?>

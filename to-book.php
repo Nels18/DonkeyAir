@@ -1,12 +1,20 @@
 <?php
 session_start();
 
-require_once "_connect.php";
 require_once "lib/Dataform.php";
+require_once "lib/Validator.php";
 require_once 'lib/Database.php';
 
-
-$dataform = Dataform::getInstance($_GET);
+// setlocale(LC_TIME, 'fr','fr_FR','fr_FR@euro','fr_FR.utf8','fr-FR','fra');
+// $dataform = Dataform::getInstance($_POST);
+// // var_dump($dataform->data);
+// var_dump($dataform->getData());
+// $validatorForm = new Validator($dataform->getData());
+// $_SESSION['fail-message'] = $validatorForm->getErrors(array_keys($dataform->getData()));
+// var_dump($_SESSION);
+// if (!empty($_SESSION['fail-message'])) {
+//     header('Location: index.php');
+// }
 // print_r($dataform);
 // print_r($_GET);
 // var_dump($dataform);
@@ -64,6 +72,7 @@ $resultIdAvailableOutboundFlight = Database::getInstance()->query($requestIdAvai
 var_dump($resultMultiplierCoefficient);
 
 $resultAvailableOutboundFlight = Database::getInstance()->query($requestAvailableOutboundFlight);
+var_dump($resultAvailableOutboundFlight);
 // strftime('%a. %d %b %G',strtotime($valuesForm['departure-date']))
 // setlocale(LC_TIME, "fr_FR");
 // var_dump(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[0]['departure_date'])));
@@ -109,15 +118,14 @@ $idReturnFlight = $resultReturnFlightID[0]['id'];
                     <div class="outbound-flight">
                         <h3 class="card-title card-header text-white bg-primary"><i class="fas fa-plane"></i> Vol aller</h3>
                         <div class="card-title card-header">
-                            <p><?php echo $_GET['city-start']?> <i class="fas fa-arrow-right"></i> <?php echo $_GET['city-to']?></p>
+                            <p><?php echo $_POST['city-start']?> <i class="fas fa-arrow-right"></i> <?php echo $_POST['city-to']?></p>
                         </div>
                     </div>
 
                     <div id="carouselExampleControls" class="carousel p-5" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             <?php for ($i=0; $i<30; $i++){ ?>
-                            <div class="carousel-item active">
-                                <div class="card card-item bg-light shadow-sm">
+                                <div class="carousel-item active">
                                     <div class="card card-item bg-light shadow-sm">
                                         <h4 class="card-header text-white bg-primary">
                                             <?php if ($i == 0){
@@ -145,7 +153,6 @@ $idReturnFlight = $resultReturnFlightID[0]['id'];
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             <?php } ?>  
                         </div>
                         <div class="row" id="selectedOutboundFlightInformations">
@@ -191,7 +198,7 @@ $idReturnFlight = $resultReturnFlightID[0]['id'];
                             <div class="return-flight">
                                 <h3 class="card-title card-header text-white bg-primary"><i class="fas fa-plane"></i> Vol retour</h3>
                                 <div class="card-title card-header">
-                                    <p><?php echo $_GET['city-to']?> <i class="fas fa-arrow-right"></i> <?php echo $_GET['city-start']?></p>
+                                    <p><?php echo $_POST['city-to']?> <i class="fas fa-arrow-right"></i> <?php echo $_POST['city-start']?></p>
                                 </div>
                             </div>
                             <div id="carouselExampleControls2" class="carousel p-5" data-bs-ride="carousel">
