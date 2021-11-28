@@ -4,7 +4,7 @@
     
     $email = $_POST['email'];
     $password = $_POST['password0'];
-    $sha_password = SHA1($password);
+    $sha_Password = SHA1($password);
     $error = "";
     
     $request = " SELECT * from customer where password = '".$sha_password."' and email = '".$email."' ";
