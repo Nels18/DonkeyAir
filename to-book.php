@@ -2,10 +2,18 @@
 session_start();
 
 require_once "lib/Dataform.php";
+require_once "lib/Validator.php";
 
+setlocale(LC_TIME, 'fr','fr_FR','fr_FR@euro','fr_FR.utf8','fr-FR','fra');
 $dataform = Dataform::getInstance($_GET);
-// print_r($dataform);
-print_r($_GET);
+// var_dump($dataform->data);
+var_dump($dataform->getData());
+$validatorForm = new Validator($dataform->getData());
+$_SESSION['fail-message'] = $validatorForm->getErrors(array_keys($dataform->getData()));
+var_dump($_SESSION);
+if (!empty($_SESSION['fail-message'])) {
+    header('Location: index.php');
+}
 
 $_GET['test'] = [
     [
@@ -65,29 +73,29 @@ $searchTrip = $_GET['trip-type'];
                     <div id="carouselExampleControls" class="carousel p-5" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             <?php for ($i=0; $i<30; $i++){ ?>
-                            <div class="carousel-item active">
-                                <div class="card card-item bg-light shadow-sm">
+                                <div class="carousel-item active">
                                     <div class="card card-item bg-light shadow-sm">
-                                        <h4 class="card-header text-white bg-primary">
-                                        <?php setlocale(LC_TIME, "fr_FR"); 
-                                            echo strftime('%a. %d %b %Y', strtotime("$i day"));
-                                        ?>
-                                        </h4>
-                                        <div class="card-body">
-                                            <p class="card-text">
-                                                <?php if ($_GET['test'][0]['price'] != ''){ ?>
-                                                <div class="card-body" type="submit" onclick="getValue();" id="test" value="<?php echo $_GET['test'][0]['price'] ?>">
-                                                    <?php echo 'à partir de ' .$_GET['test'][0]['price'] ?>
-                                                </div>
-                                            <?php } else { ?><div class="card-body-grey" type="submit">
-                                                    Non disponible
-                                                </div>
-                                            <?php } ?></p>
-                                        <a href="#date" class="btn btn-primary" onclick="getValue();">Sélectionner</a>
+                                        <div class="card card-item bg-light shadow-sm">
+                                            <h4 class="card-header text-white bg-primary">
+                                            <?php 
+                                                echo strftime('%a. %d %b %Y', strtotime("$i day"));
+                                            ?>
+                                            </h4>
+                                            <div class="card-body">
+                                                <p class="card-text">
+                                                    <?php if ($_GET['test'][0]['price'] != ''){ ?>
+                                                    <div class="card-body" type="submit" onclick="getValue();" id="test" value="<?php echo $_GET['test'][0]['price'] ?>">
+                                                        <?php echo 'à partir de ' .$_GET['test'][0]['price'] ?>
+                                                    </div>
+                                                <?php } else { ?><div class="card-body-grey" type="submit">
+                                                        Non disponible
+                                                    </div>
+                                                <?php } ?></p>
+                                            <a href="#date" class="btn btn-primary" onclick="getValue();">Sélectionner</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             <?php } ?>  
                         </div>
                         
@@ -116,7 +124,7 @@ $searchTrip = $_GET['trip-type'];
                                     <div class="carousel-item active">
                                         <div class="card card-item bg-light shadow-sm">
                                             <h4 class="card-header text-white bg-primary">
-                                            <?php setlocale(LC_TIME, "fr_FR"); 
+                                            <?php 
                                                 echo strftime('%a. %d %b %Y', strtotime("$i day"));
                                             ?>
                                             </h4>
