@@ -86,3 +86,7 @@ label {
         height: 17em;
     }
 }
+
+#selectedOutboundFlightInformations, #selectedReturnFlightInformations {
+    visibility: hidden;
+}

@@ -45,7 +45,7 @@ class Dataform
             case 'business-class':
                 $tripClass = "Affaire";
                 break;
-            case 'firts-class':
+            case 'first-class':
                 $tripClass = "Première";
                 break;
             
