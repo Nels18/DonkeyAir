@@ -100,3 +100,18 @@ window.onload = function () {
   // console.log(request);
   showReturn();
 };
+
+/* Carousel */
+
+// var button = document.getElementById('show_button')
+// button.addEventListener('click',hideshow,false);
+
+// function hideshow() {
+//   document.getElementById('hidden-div').style.display = 'block'; 
+//   this.style.display = 'none'
+// }
+
+function changeBackgroundColor(newColor) {
+  var elem = document.getElementById('btn-select-');
+  elem.style.color = newColor;
+}
