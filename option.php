@@ -10,8 +10,23 @@ if (isset($_POST['choix2']) && $_POST['choix2'] == 'Yes') {
      }
 if (isset($_POST['choix3']) && $_POST['choix3'] == 'Yes') {
       $optionChoisi = $_POST['optionMax'];
+
+  $query2= "SELECT * FROM option";
+  $query2= Database:: getInstance()->query($query2);
+  $option= $resultat2[0];
+
+foreach ($resultat2 as $key){
+  var_dump($key ['id']);
+  var_dump($key ['name']);
+
+  var_dump($key['multiplier_coefficient']);
+}
+
+
     }
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
