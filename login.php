@@ -7,7 +7,7 @@
     $sha_Password = SHA1($password);
     $error = "";
     
-    $request = " SELECT * from customer where password = '".$sha_password."' and email = '".$email."' ";
+    $request = " SELECT * from customer where password = '".$sha_Password."' and email = '".$email."' ";
     $database = Database::getInstance();
     $result = $database->query($request);
     // var_dump($result);
