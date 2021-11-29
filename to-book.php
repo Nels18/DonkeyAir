@@ -1,14 +1,16 @@
 <?php
+
 session_start();
 
 require_once "lib/Dataform.php";
 require_once "lib/Validator.php";
 require_once 'lib/Database.php';
 
-// setlocale(LC_TIME, 'fr','fr_FR','fr_FR@euro','fr_FR.utf8','fr-FR','fra');
-// $dataform = Dataform::getInstance($_POST);
-// // var_dump($dataform->data);
-// var_dump($dataform->getData());
+setlocale(LC_TIME, 'fr','fr_FR','fr_FR@euro','fr_FR.utf8','fr-FR','fra');
+$data = Database::getInstance();
+$dataform = Dataform::getInstance($_POST);
+// var_dump($dataform->data);
+var_dump($dataform->getData());
 // $validatorForm = new Validator($dataform->getData());
 // $_SESSION['fail-message'] = $validatorForm->getErrors(array_keys($dataform->getData()));
 // var_dump($_SESSION);
@@ -16,13 +18,15 @@ require_once 'lib/Database.php';
 //     header('Location: index.php');
 // }
 // print_r($dataform);
-// print_r($_GET);
+// print_r($_POST);
 // var_dump($dataform);
 
-$searchTrip = $_GET['trip-type'];
-$cityStart = substr($_GET['city-start'], 0, 3);
-$cityTo = substr($_GET['city-to'], 0, 3);
-$tripClass = $_GET['trip-class'];
+$searchTrip = $_POST['trip-type'];
+$cityStart = substr($_POST['city-start'], 0, 3);
+$cityTo = substr($_POST['city-to'], 0, 3);
+$tripClass = $_POST['trip-class'];
+$numberOfPassenger = $_POST['number-of-passenger'];
+$tripType = $_POST['trip-type'];
 
 $requestPriceOutbound = "SELECT price FROM airport 
 LEFT JOIN flight ON airport.code = airport_from_code 
@@ -62,23 +66,23 @@ INNER JOIN airport a ON a.code = f.airport_from_code
 INNER JOIN country c ON c.code = a.country_code
 WHERE f.airport_from_code = '$cityStart'";
 
-$resultPriceOutbound = Database::getInstance()->query($requestPriceOutbound);
-$resultPriceReturn = Database::getInstance()->query($requestPriceReturn);
-$resultOutboundFlightID = Database::getInstance()->query($requestOutboundFlightID);
-$resultReturnFlightID = Database::getInstance()->query($requestReturnFlightID);
-$resultMultiplierCoefficient = Database::getInstance()->query($requestMultiplierCoefficient);
-$resultIdAvailableOutboundFlight = Database::getInstance()->query($requestIdAvailableOutboundFlight);
+$resultPriceOutbound = $data->query($requestPriceOutbound);
+$resultPriceReturn = $data->query($requestPriceReturn);
+$resultOutboundFlightID = $data->query($requestOutboundFlightID);
+$resultReturnFlightID = $data->query($requestReturnFlightID);
+$resultMultiplierCoefficient = $data->query($requestMultiplierCoefficient);
+$resultIdAvailableOutboundFlight = $data->query($requestIdAvailableOutboundFlight);
 // var_dump($resultIdAvailableOutboundFlight);
-var_dump($resultMultiplierCoefficient);
+// var_dump($resultMultiplierCoefficient);
 
-$resultAvailableOutboundFlight = Database::getInstance()->query($requestAvailableOutboundFlight);
-var_dump($resultAvailableOutboundFlight);
+$resultAvailableOutboundFlight = $data->query($requestAvailableOutboundFlight);
+// var_dump($resultAvailableOutboundFlight);
 // strftime('%a. %d %b %G',strtotime($valuesForm['departure-date']))
 // setlocale(LC_TIME, "fr_FR");
 // var_dump(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[0]['departure_date'])));
 // var_dump(strftime('%H:%M',strtotime($resultAvailableOutboundFlight[0]['departure_date'])));
 
-$resultAvailableReturnFlight = Database::getInstance()->query($requestAvailableReturnFlight);
+$resultAvailableReturnFlight = $data->query($requestAvailableReturnFlight);
 // strftime('%a. %d %b %G',strtotime($valuesForm['arrival-date']))
 // var_dump(strftime('%a. %d %b %G',strtotime($resultAvailableReturnFlight[0]['arrival_date'])));
 // var_dump(strftime('%H:%M',strtotime($resultAvailableReturnFlight[0]['departure_date'])));
@@ -89,6 +93,14 @@ $departureTimeReturnFlight = strftime('%H%M',strtotime($resultAvailableReturnFli
 $arrivalTimeReturnFlight = strftime('%H%M',strtotime($resultAvailableReturnFlight[0]['arrival_date']));
 $idOutboundFlight = $resultOutboundFlightID[0]['id'];
 $idReturnFlight = $resultReturnFlightID[0]['id']; 
+
+$_SESSION['trip-class'] = $tripClass;
+$_SESSION['number-of-passenger'] = $numberOfPassenger;
+$_SESSION['trip-type'] = $tripType;
+$_SESSION['outbound-flight-price-with-class'] = $resultPriceOutbound[0]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"];
+$_SESSION['return-flight-price-with-class'] = $resultPriceOutbound[1]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"];
+$_SESSION['total-price'] = $_SESSION['outbound-flight-price-with-class'] + $_SESSION['return-flight-price-with-class'];
+var_dump($_SESSION);
 
 ?>
 
@@ -276,7 +288,7 @@ $idReturnFlight = $resultReturnFlightID[0]['id'];
                     <?php endif; ?>
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <a href="to-book.php?id=<?php echo $resultIdAvailableOutboundFlight[0]['id']?>">
+                    <a href="index.php">
                         <button class="btn btn-success me-md-2 btn-lg" type="button">Réserver</button>
                     </a>
                 </div>
