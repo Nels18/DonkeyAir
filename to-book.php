@@ -288,7 +288,7 @@ var_dump($_SESSION);
                     <?php endif; ?>
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <a href="index.php">
+                    <a href="option.php">
                         <button class="btn btn-success me-md-2 btn-lg" type="button">Réserver</button>
                     </a>
                 </div>
