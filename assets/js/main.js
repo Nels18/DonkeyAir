@@ -100,3 +100,18 @@ window.onload = function () {
   // console.log(request);
   showReturn();
 };
+
+
+function myFunction() {
+var x = document.getElementById("exampleInputPassword1");
+if (x.type === "password"){
+  x.type = "text";
+  document.getElementById('hide').style.display = "inline-block";
+  document.getElementById('show').style.display  = "none";
+}
+else{
+  x.type = "password";
+  document.getElementById('hide').style.display = "none";
+  document.getElementById('show').style.display = "inline-block";
+}
+};

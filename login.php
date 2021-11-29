@@ -1,4 +1,4 @@
-<!--div class="card p-5 m-5 rounded-3" -->
+<!--div class="card p-5 m-5 rounded-3" >
   <?php
     require_once "lib/Database.php";
     
@@ -7,10 +7,10 @@
     $sha_Password = SHA1($password);
     $error = "";
     
-    $request = " SELECT * from customer where password = '".$sha_password."' and email = '".$email."' ";
+    $request = " SELECT * from customer where password = '".$sha_Password."' and email = '".$email."' ";
     $database = Database::getInstance();
     $result = $database->query($request);
-    // var_dump($result);
+    //var_dump($result);
     if (isset($_POST['submit'])) {
       if ($email == $result[0]["email"] && (SHA1($password) == $result[0]["password"])) 
       {
@@ -27,6 +27,7 @@
     
    
   ?>
+  </div-->
 
 <!DOCTYPE html>
   <html lang="fr">
@@ -44,14 +45,14 @@
             <div class="row justify-content-center">
                 <div class="col-10 card p-5 m-5 rounded-3">
                     <h2 class="text-center">Connexion</h2>
-                    <h6 class="<?php if ($error !== "") {
+                    <p class="<?php if ($error !== "") {
                                        echo "alert alert-warning text-center";
                                      } else {
                                        echo "";
                                      }
                                  ?>">
                       <?php echo $error; ?>
-                    </h6>
+                    </p>
                     <form action="login.php" method="post">
                       <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Adresse Mail</label>
@@ -61,19 +62,9 @@
                       <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Mot de passe </label>
                         <input type="password" class="form-control" id="exampleInputPassword1" name="password0">
-                        
-                      </div>
-                      <div class="mb-3">
-                      <input type="checkbox" name="checkbox"> Show password
-                        <?php 
-                        $checkbox = isset($_POST['checkbox']) ? $_POST['checkbox'] : false;
-                        echo $checkbox;
-                        ?>
+                        <i class="far fa-eye-slash" id="hide" onclick="myFunction()"></i>
+                        <i class="far fa-eye" id="show" onclick="myFunction()"></i>
 
-                      </div>
-                      <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
                       </div>
                       <button type="submit" class="btn btn-primary" name="submit">Connexion</button>
                     </form>
@@ -82,7 +73,7 @@
             </div>
         </main>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-
+    <script src="assets/js/main.js"></script>
     </body>
    
 </html>

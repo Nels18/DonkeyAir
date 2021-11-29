@@ -79,3 +79,9 @@ body {
     background-attachment: fixed;
     background-size: cover;
 }
+
+
+#hide {
+    display: none;
+
+}
