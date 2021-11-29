@@ -18,6 +18,13 @@
         <main class="container-fluid bg-image">
             <div class="row justify-content-center">
                 <div class="col-10 card p-5 m-5 rounded-3">
+                    <p class="text-center alert alert-success"> 
+                        <?php     
+                            if(isset($_GET['success'])){
+                                echo $_GET['success'];
+                            } 
+                        ?> 
+                    </p>
                     <h2>Rechercher des vols</h2>
                     <?php include("templates/form-search.php");?>
                 </div>
