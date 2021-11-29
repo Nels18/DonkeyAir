@@ -1,4 +1,5 @@
-main.bg-image{
+
+.bg-image{
     min-height: 100vh;
     background-image: url(../img/mickey-o-neil-xL66l\ -\ msXU-unsplash.jpg);
     background-size: cover;
@@ -6,12 +7,25 @@ main.bg-image{
     background-position: center;
 }
 
+/* Form search */
+
 .hidden {
     display: none;
+    opacity: 0;
+    transition: display 0s, opacity 0.5s linear;
 }
 
 label {
     font-weight: bold;
+}
+
+/* Carousel */
+
+.card-item {
+    width: 17vw;
+    height: 250px;
+    margin: 0 auto;
+    /* border: rgba(0,0,0,.125) solid 1px; */
 }
 
 .carousel-inner {
@@ -19,10 +33,13 @@ label {
 }
 
 .carousel .card {
-    margin: 0 0.5em;
-    box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
+    /* margin: 0 0.5em; */
     border: none;
     text-align: center;
+}
+
+.card {
+    box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
 }
 
 .carousel-control-prev,
@@ -33,6 +50,13 @@ label {
     border-radius: 50%;
     top: 50%;
     transform: translateY(-50%);
+}
+
+/* Confirmation */
+
+.customer-header {
+    font-size: 1.3rem;
+    font-weight: 600;
 }
 
 @media (min-width: 768px) {
@@ -83,5 +107,8 @@ body {
 
 #hide {
     display: none;
+}
 
+#selectedOutboundFlightInformations, #selectedReturnFlightInformations {
+    visibility: hidden;
 }

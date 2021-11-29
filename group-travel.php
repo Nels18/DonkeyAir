@@ -1,6 +1,6 @@
 <?php
-    require_once "lib/functions.php";
     
+    require_once("lib/Dataform.php");
     $now = new DateTime("now", new DateTimeZone("Europe/Paris"));
 
 ?>
@@ -20,11 +20,11 @@
             <div class="row justify-content-center">
                 <div class="col-10 card p-5 m-5 rounded-3">
                     <h2>Envoyer une demande de voyage en groupe</h2>
-                    <p>Veuillez remplir le formulaire ci-dessous pour demander un devis pour un voyage en groupe. Un groupe se compose d'au moins 10 passagers voyageant ensemble aux mêmes dates et sur les mêmes vols.</p>
+                    <p>Veuillez remplir le formulaire ci-dessous pour demander un devis pour un voyage en groupe. Un groupe se compose d'au moins <?php echo Dataform::MAX_PASSENGERS; ?> passagers voyageant ensemble aux mêmes dates et sur les mêmes vols.</p>
                     <?php include("templates/form-search.php");?>
                 </div>
             </div>
         </main>
-    <script src="assets/js/main.js"></script>
+        <script src="assets/js/main.js"></script>
     </body>
 </html>

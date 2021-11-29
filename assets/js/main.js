@@ -60,10 +60,10 @@ const showReturn = () => {
 const departureDate = document.querySelector('#departure-date');
 const returnDate = document.querySelector('#return-date');
 
-returnDate.setAttribute('min',departureDate.getAttribute('min'));
-departureDate.addEventListener('change', function(event) {
-  returnDate.setAttribute('min',departureDate.value);
-})
+// returnDate.setAttribute('min',departureDate.getAttribute('min'));
+// departureDate.addEventListener('change', function(event) {
+//   returnDate.setAttribute('min',departureDate.value);
+// })
 
 
 window.onload = function () {
@@ -115,3 +115,17 @@ else{
   document.getElementById('show').style.display = "inline-block";
 }
 };
+/* Carousel */
+
+// function changeBackgroundColor(newColor) {
+//   var elem = document.getElementById('btn-select-');
+//   elem.style.color = newColor;
+// }
+
+document.getElementById("btn-select-outbound").addEventListener("click", function() {
+  document.getElementById("selectedOutboundFlightInformations").style.visibility = "visible";
+});
+
+document.getElementById("btn-select-return").addEventListener("click", function() {
+  document.getElementById("selectedReturnFlightInformations").style.visibility = "visible";
+});
