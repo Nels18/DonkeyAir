@@ -1,7 +1,6 @@
 <?php
     
     $now = new DateTime("now", new DateTimeZone("Europe/Paris"));
-
 ?>
 <!DOCTYPE html>
     <html lang="fr">
@@ -15,6 +14,7 @@
         <title>DonkeyAir</title>
     </head>
     <body>
+        <?php     include("templates/header.php"); ?>
         <main class="container-fluid bg-image">
             <div class="row justify-content-center">
                 <div class="col-10 card p-5 m-5 rounded-3">
