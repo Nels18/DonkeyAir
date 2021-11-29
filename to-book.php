@@ -1,41 +1,32 @@
 <?php
+
 session_start();
 
-require_once "_connect.php";
 require_once "lib/Dataform.php";
+require_once "lib/Validator.php";
 require_once 'lib/Database.php';
 
-
-$dataform = Dataform::getInstance($_GET);
+setlocale(LC_TIME, 'fr','fr_FR','fr_FR@euro','fr_FR.utf8','fr-FR','fra');
+$data = Database::getInstance();
+$dataform = Dataform::getInstance($_POST);
+// var_dump($dataform->data);
+var_dump($dataform->getData());
+// $validatorForm = new Validator($dataform->getData());
+// $_SESSION['fail-message'] = $validatorForm->getErrors(array_keys($dataform->getData()));
+// var_dump($_SESSION);
+// if (!empty($_SESSION['fail-message'])) {
+//     header('Location: index.php');
+// }
 // print_r($dataform);
-// print_r($_GET);
+// print_r($_POST);
+// var_dump($dataform);
 
-$_GET['test'] = [
-    [
-        'departure-city' => 'Paris',
-        'arrival-city' => 'New-York',
-        'date-selected' => 'Jeu. 25',
-        'trip_type' => 'round-trip',
-        'price' => '150€',
-    ],
-];
-
-$_GET['test1'] = [
-    [
-        'departure-city' => 'Marseille',
-        'arrival-city' => 'Moscou',
-        'date-selected' => 'Jeu. 25 nov 2021',
-        'trip_type' => '',
-        'price' => ''
-    ],
-];
-// print_r($_GET);
-
-$searchTrip = $_GET['trip-type'];
-
-$cityStart = substr($_GET['city-start'], 0, 3);
-
-$cityTo = substr($_GET['city-to'], 0, 3);
+$searchTrip = $_POST['trip-type'];
+$cityStart = substr($_POST['city-start'], 0, 3);
+$cityTo = substr($_POST['city-to'], 0, 3);
+$tripClass = $_POST['trip-class'];
+$numberOfPassenger = $_POST['number-of-passenger'];
+$tripType = $_POST['trip-type'];
 
 $requestPriceOutbound = "SELECT price FROM airport 
 LEFT JOIN flight ON airport.code = airport_from_code 
@@ -65,18 +56,33 @@ INNER JOIN airport a ON a.code = f.airport_to_code
 INNER JOIN country c ON c.code = a.country_code
 WHERE f.airport_to_code = '$cityTo'";
 
-$resultPriceOutbound = Database::getInstance()->query($requestPriceOutbound);
-$resultPriceReturn = Database::getInstance()->query($requestPriceReturn);
-$resultOutboundFlightID = Database::getInstance()->query($requestOutboundFlightID);
-$resultReturnFlightID = Database::getInstance()->query($requestReturnFlightID);
+$requestMultiplierCoefficient = "SELECT multiplier_coefficient 
+FROM class 
+WHERE name = '$tripClass'";
 
-$resultAvailableOutboundFlight = Database::getInstance()->query($requestAvailableOutboundFlight);
+$requestIdAvailableOutboundFlight = "SELECT a.name airport_name, f.airport_from_code, c.name country_name, f.price, f.departure_date, f.arrival_date, f.id
+FROM flight f
+INNER JOIN airport a ON a.code = f.airport_from_code
+INNER JOIN country c ON c.code = a.country_code
+WHERE f.airport_from_code = '$cityStart'";
+
+$resultPriceOutbound = $data->query($requestPriceOutbound);
+$resultPriceReturn = $data->query($requestPriceReturn);
+$resultOutboundFlightID = $data->query($requestOutboundFlightID);
+$resultReturnFlightID = $data->query($requestReturnFlightID);
+$resultMultiplierCoefficient = $data->query($requestMultiplierCoefficient);
+$resultIdAvailableOutboundFlight = $data->query($requestIdAvailableOutboundFlight);
+// var_dump($resultIdAvailableOutboundFlight);
+// var_dump($resultMultiplierCoefficient);
+
+$resultAvailableOutboundFlight = $data->query($requestAvailableOutboundFlight);
+// var_dump($resultAvailableOutboundFlight);
 // strftime('%a. %d %b %G',strtotime($valuesForm['departure-date']))
 // setlocale(LC_TIME, "fr_FR");
 // var_dump(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[0]['departure_date'])));
 // var_dump(strftime('%H:%M',strtotime($resultAvailableOutboundFlight[0]['departure_date'])));
 
-$resultAvailableReturnFlight = Database::getInstance()->query($requestAvailableReturnFlight);
+$resultAvailableReturnFlight = $data->query($requestAvailableReturnFlight);
 // strftime('%a. %d %b %G',strtotime($valuesForm['arrival-date']))
 // var_dump(strftime('%a. %d %b %G',strtotime($resultAvailableReturnFlight[0]['arrival_date'])));
 // var_dump(strftime('%H:%M',strtotime($resultAvailableReturnFlight[0]['departure_date'])));
@@ -86,7 +92,15 @@ $arrivalTimeOutboundFlight = strftime('%H%M',strtotime($resultAvailableOutboundF
 $departureTimeReturnFlight = strftime('%H%M',strtotime($resultAvailableReturnFlight[0]['departure_date']));
 $arrivalTimeReturnFlight = strftime('%H%M',strtotime($resultAvailableReturnFlight[0]['arrival_date']));
 $idOutboundFlight = $resultOutboundFlightID[0]['id'];
-$idReturnFlight = $resultReturnFlightID[0]['id'];
+$idReturnFlight = $resultReturnFlightID[0]['id']; 
+
+$_SESSION['trip-class'] = $tripClass;
+$_SESSION['number-of-passenger'] = $numberOfPassenger;
+$_SESSION['trip-type'] = $tripType;
+$_SESSION['outbound-flight-price-with-class'] = $resultPriceOutbound[0]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"];
+$_SESSION['return-flight-price-with-class'] = $resultPriceOutbound[1]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"];
+$_SESSION['total-price'] = $_SESSION['outbound-flight-price-with-class'] + $_SESSION['return-flight-price-with-class'];
+var_dump($_SESSION);
 
 ?>
 
@@ -116,39 +130,44 @@ $idReturnFlight = $resultReturnFlightID[0]['id'];
                     <div class="outbound-flight">
                         <h3 class="card-title card-header text-white bg-primary"><i class="fas fa-plane"></i> Vol aller</h3>
                         <div class="card-title card-header">
-                            <p><?php echo $_GET['city-start']?> <i class="fas fa-arrow-right"></i> <?php echo $_GET['city-to']?></p>
+                            <p><?php echo $_POST['city-start']?> <i class="fas fa-arrow-right"></i> <?php echo $_POST['city-to']?></p>
                         </div>
                     </div>
 
                     <div id="carouselExampleControls" class="carousel p-5" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             <?php for ($i=0; $i<30; $i++){ ?>
-                            <div class="carousel-item active">
-                                <div class="card card-item bg-light shadow-sm">
+                                <div class="carousel-item active">
                                     <div class="card card-item bg-light shadow-sm">
                                         <h4 class="card-header text-white bg-primary">
-                                        <?php setlocale(LC_TIME, "fr_FR"); 
-                                            echo strftime('%a. %d %b %Y', strtotime("$i day"));
-                                        ?>
+                                            <?php if ($i == 0){
+                                                echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[0]['departure_date'] . " -1 day")));
+                                            } elseif ($i == 1) { 
+                                                echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[0]['departure_date']))); 
+                                            } else echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[0]['departure_date'] . " +$i day" . " -1 day")));
+                                            ?>
                                         </h4>
                                         <div class="card-body">
                                             <p class="card-text">
-                                                <?php if ($_GET['test'][0]['price'] != ''){ ?>
-                                                <div class="card-body" type="submit" onclick="getValue();" id="test" value="<?php echo $_GET['test'][0]['price'] ?>">
-                                                    <?php echo 'à partir de ' .$_GET['test'][0]['price'] ?>
+                                                <div class="card-body">
+                                                    <?php if ($i == 1) {
+                                                        echo 'à partir de ' .$resultPriceOutbound[0]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"] . ' €';
+                                                    }
+                                                    else echo 'Pas de vols disponibles';
+                                                    ?>
                                                 </div>
-                                            <?php } else { ?><div class="card-body-grey" type="submit">
-                                                    Non disponible
-                                                </div>
-                                            <?php } ?></p>
-                                            <button class="btn btn-primary" type="button" id="btn-select-<?php echo $i+1 ?>"onclick="getValue();">Sélectionner</button>
+                                            </p>
+                                            <div>
+                                                <?php if ($i == 1){?>
+                                                    <button class="btn btn-primary" type="button" id="btn-select-outbound">Sélectionner</button>
+                                                <?php } ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             <?php } ?>  
                         </div>
-                        <div class="row">
+                        <div class="row" id="selectedOutboundFlightInformations">
                             <div class="col-sm-6">
                                 <div class="card-title card-header">
                                     <div>
@@ -169,7 +188,7 @@ $idReturnFlight = $resultReturnFlightID[0]['id'];
                                         <?php echo $cityStart.$cityTo.$departureTimeOutboundFlight.$arrivalTimeReturnFlight.$idOutboundFlight; ?>
                                     </div>
                                     <div>
-                                        <?php echo $resultPriceOutbound[0]['price'] . ' €' ?>
+                                        <?php echo $resultPriceOutbound[0]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"] . ' €' ?>
                                     </div>
                                 </div>
                             </div>
@@ -191,7 +210,7 @@ $idReturnFlight = $resultReturnFlightID[0]['id'];
                             <div class="return-flight">
                                 <h3 class="card-title card-header text-white bg-primary"><i class="fas fa-plane"></i> Vol retour</h3>
                                 <div class="card-title card-header">
-                                    <p><?php echo $_GET['city-to']?> <i class="fas fa-arrow-right"></i> <?php echo $_GET['city-start']?></p>
+                                    <p><?php echo $_POST['city-to']?> <i class="fas fa-arrow-right"></i> <?php echo $_POST['city-start']?></p>
                                 </div>
                             </div>
                             <div id="carouselExampleControls2" class="carousel p-5" data-bs-ride="carousel">
@@ -200,38 +219,45 @@ $idReturnFlight = $resultReturnFlightID[0]['id'];
                                     <div class="carousel-item active">
                                         <div class="card card-item bg-light shadow-sm">
                                             <h4 class="card-header text-white bg-primary">
-                                            <?php setlocale(LC_TIME, "fr_FR"); 
-                                                echo strftime('%a. %d %b %Y', strtotime("$i day"));
-                                            ?>
+                                                <?php if ($i == 0){
+                                                    echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[1]['departure_date'] . " -1 day")));
+                                                } elseif ($i == 1) { 
+                                                    echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[1]['departure_date']))); 
+                                                } else echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[1]['departure_date'] . " +$i day" . " -1 day")));
+                                                ?>
                                             </h4>
                                             <div class="card-body">
                                                 <p class="card-text">
-                                                    <?php if ($_GET['test'][0]['price'] != ''){ ?>
-                                                    <div class="card-body" type="submit" onclick="getValue();" id="test" value="<?php echo $_GET['test'][0]['price'] ?>">
-                                                        <?php echo 'à partir de ' . $_GET['test'][0]['price'] ?>
+                                                    <div class="card-body">
+                                                        <?php if ($i == 1) {
+                                                            echo 'à partir de ' .$resultPriceOutbound[1]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"] . ' €';
+                                                        }
+                                                        else echo 'Pas de vols disponibles';
+                                                        ?>
                                                     </div>
-                                                <?php } else { ?><div class="card-body-grey" type="submit">
-                                                        Non disponible
-                                                    </div>
-                                                <?php } ?></p>
-                                                <button class="btn btn-primary" type="button" onclick="getValue();">Sélectionner</button>
+                                                </p>
+                                                <div>
+                                                    <?php if ($i == 1){?>
+                                                        <button class="btn btn-primary" type="button" id="btn-select-return">Sélectionner</button>
+                                                    <?php } ?>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <?php } ?>  
                                 </div>
                                 <div>
-                                    <div class="row">
+                                    <div class="row" id="selectedReturnFlightInformations">
                                         <div class="col-sm-6">
                                             <div class="card-title card-header">
                                                 <div>
-                                                    <?php echo(strftime('%a. %d %b %G',strtotime($resultAvailableReturnFlight[0]['departure_date']))); ?>
+                                                    <?php echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[1]['departure_date']))); ?>
                                                 </div>
                                                 <div>
                                                     <i class="fas fa-clock"></i> 
-                                                    <?php echo(strftime('%H:%M',strtotime($resultAvailableReturnFlight[0]['departure_date']))); ?>
+                                                    <?php echo(strftime('%H:%M',strtotime($resultAvailableOutboundFlight[1]['departure_date']))); ?>
                                                     <i class="fas fa-plane"></i> 
-                                                    <?php echo(strftime('%H:%M',strtotime($resultAvailableReturnFlight[0]['arrival_date']))); ?>
+                                                    <?php echo(strftime('%H:%M',strtotime($resultAvailableOutboundFlight[1]['arrival_date']))); ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -242,7 +268,7 @@ $idReturnFlight = $resultReturnFlightID[0]['id'];
                                                     <?php echo $cityTo.$cityStart.$departureTimeReturnFlight.$arrivalTimeReturnFlight.$idReturnFlight; ?>
                                                 </div>
                                                 <div>
-                                                    <?php echo $resultPriceReturn[0]['price'] . ' €' ?>
+                                                    <?php echo $resultPriceOutbound[1]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"] . ' €' ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -262,7 +288,9 @@ $idReturnFlight = $resultReturnFlightID[0]['id'];
                     <?php endif; ?>
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button class="btn btn-success me-md-2 btn-lg" type="button">Réserver</button>
+                    <a href="option.php">
+                        <button class="btn btn-success me-md-2 btn-lg" type="button">Réserver</button>
+                    </a>
                 </div>
             </div>
         </div>

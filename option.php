@@ -1,35 +1,59 @@
-<?php require_once('./lib/Database.php'); 
 
-var_dump($_POST);
+<?php
+
+session_start();
+require_once "lib/Database.php";
+
+
+$data = Database::getInstance();
+// var_dump($_SESSION);
 //die;
-if (isset($_POST['choix']) && $_POST['choix'] == 'Yes') {
-  $optionChoisi = $_POST['optionBasic'];
-   }
-if (isset($_POST['choix2']) && $_POST['choix2'] == 'Yes') {
-    $optionChoisi = $_POST['optionFlex'];
-     }
-if (isset($_POST['choix3']) && $_POST['choix3'] == 'Yes') {
-      $optionChoisi = $_POST['optionMax'];
-
-  $query2= "SELECT * FROM option";
-  $query2= Database:: getInstance()->query($query2);
-  $option= $resultat2[0];
-
-foreach ($resultat2 as $key){
-  var_dump($key ['id']);
-  var_dump($key ['name']);
-
-  var_dump($key['multiplier_coefficient']);
-}
+// if (isset($_SESSION['choix']) && $_SESSION['choix'] == 'Yes') {
+//   $optionChoisi = $_SESSION['optionBasic'];
+//    }
+// if (isset($_SESSION['choix2']) && $_SESSION['choix2'] == 'Yes') {
+//     $optionChoisi = $_SESSION['optionFlex'];
+//      }
+// if (isset($_SESSION['choix3']) && $_SESSION['choix3'] == 'Yes') {
+//       $optionChoisi = $_SESSION['optionMax'];
+// }
+  $query2= "SELECT * FROM `option`";
+  $resultat2= Database::getInstance()->query($query2);
+  $option= $resultat2;
 
 
-    }
+
+// foreach ($resultat2 as $key){
+//   var_dump($key ['id']);
+//   var_dump($key ['name']);
+
+//   var_dump($key['multiplier_coefficient']);
+// }
+
+  // var_dump($resultat2);
+
+  // $_SESSION['option'] = $_POST['option'];
+  // var_dump($resultat2);
+  $optionChoice= $_POST["option"];
+
+  $requestMultiplierCoefficientOption = "SELECT multiplier_coefficient 
+  FROM `option`
+  WHERE name = '$optionChoice';";
+  $resultMultiplierCoefficientOption = $data->query($requestMultiplierCoefficientOption);
+  $_SESSION['outbound-flight-final-price'] = $_SESSION["outbound-flight-price-with-class"] * $resultMultiplierCoefficientOption[0]["multiplier_coefficient"];
+  $_SESSION['return-flight-final-price'] = $_SESSION["return-flight-price-with-class"] * $resultMultiplierCoefficientOption[0]["multiplier_coefficient"];
+  $_SESSION["final-price"] = $_SESSION['outbound-flight-final-price'] + $_SESSION['return-flight-final-price'];
+  var_dump($resultat2);
+  var_dump($_SESSION['outbound-flight-final-price']);
+    
+    // var_dump($option);
+    
 ?>
 
 
-
+Ò
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -42,7 +66,7 @@ foreach ($resultat2 as $key){
 
   <body>  
     <main class="container-fluid bg-image">
-      <form action="option2.php" method="post">
+      <form action="option.php" method="post">
         <div class="card-group">
           <div class="card">
             <div class="card-body">
@@ -51,7 +75,7 @@ foreach ($resultat2 as $key){
               <p>Billet Modifiable</p><br>
               <p>Annulation du billet</p><br>
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <input type="radio" name="choix" value="1"/>
+                <input type="radio" name="option" value="Basic"/>
               </div>
             </p>
           </div>
@@ -64,7 +88,7 @@ foreach ($resultat2 as $key){
               <p>Billet Modifiable</p><br>
               <p>Annulation du billet</p><br>
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <input type="radio" name="choix" value="2"/>
+                <input type="radio" name="option" value="Plus"/>
               </div>
             </p>
           </div>
@@ -77,12 +101,17 @@ foreach ($resultat2 as $key){
             <p>Billet Modifiable</p><br>
             <p>Annulation du billet</p><br>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <input type="radio" name="choix" value="3"/>
+              <input type="radio" name="option" value="Max"/>
             </div>
           </p>
         </div>
-        <input class="btn btn-primary" type="submit" value="Valider">
-      </form>
+          
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a href="confirmation.php">
+          <input class="btn btn-primary" type="button" value="Valider">
+        </a>
+        </div>
+    </form>
     </main>
   </body>
 </html>
