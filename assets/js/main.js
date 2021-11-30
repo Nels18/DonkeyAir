@@ -101,6 +101,20 @@ window.onload = function () {
   showReturn();
 };
 
+
+function myFunction() {
+var x = document.getElementById("exampleInputPassword1");
+if (x.type === "password"){
+  x.type = "text";
+  document.getElementById('hide').style.display = "inline-block";
+  document.getElementById('show').style.display  = "none";
+}
+else{
+  x.type = "password";
+  document.getElementById('hide').style.display = "none";
+  document.getElementById('show').style.display = "inline-block";
+}
+};
 /* Carousel */
 
 // function changeBackgroundColor(newColor) {
@@ -115,4 +129,3 @@ document.getElementById("btn-select-outbound").addEventListener("click", functio
 document.getElementById("btn-select-return").addEventListener("click", function() {
   document.getElementById("selectedReturnFlightInformations").style.visibility = "visible";
 });
-
