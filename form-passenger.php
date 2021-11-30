@@ -3,34 +3,9 @@
 
     require_once "lib/Validator.php";
 
-    // session_unset();
+    $_SESSION['trip-option'] = $_POST["trip-option"];
 
-    // var_dump($_SESSION);
-
-    $valuesForm = [
-        'city-start' => 'AAE, Annaba Les Salines - Algeria',
-        'city-to' => 'KDH, Kandahar - Afghanistan',
-        'departure-from' => '2020-12-09 00:09:10',
-        'departure-to' => '2020-12-09 02:23:27',
-        'return-from' => '2021-11-23 14:29:04',
-        'return-to' => '2021-11-23 18:22:00',
-        'trip-class' => 'Économique',
-        'trip-option' => 'Plus',
-        'trip-type' => 'round-trip',
-        'number-of-passenger' => '3',
-    ];
-
-    // var_dump($valuesForm['city-to'] == $valuesForm['city-start']);
-    // $dataForm->testData($valuesForm);
-
-    $validatorForm = new Validator($valuesForm);
-    // var_dump($validatorForm->mustBeDifferent());
-
-    
-    // $_SESSION['fail-message'] = $validatorForm->getErrors(array_keys($valuesForm));
-    // if (!empty($_SESSION['fail-message'])) {
-    //     header('Location: form-passenger.php');
-    // }
+    $validatorForm = new Validator($_SESSION);
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +25,7 @@
                 <div class="col-10 card p-5 m-5 rounded-3">
                     <h2>Rechercher des vols</h2>
                     <form action="confirmation.php" method="post">
-                        <?php for ($i=0; $i < $valuesForm['number-of-passenger']; $i++): ?>
+                        <?php for ($i=0; $i < $_SESSION['number-of-passenger']; $i++): ?>
                             <?php
                             $titlePassengerNumber = "title-passenger-" . ($i + 1);
                             $firstNamePassengerNumber = "first-name-passenger-" . ($i + 1);
@@ -61,11 +36,11 @@
                                     <label for="<?php echo $titlePassengerNumber; ?>" class="form-label">Civilité :</label>
                                     <select class="form-select" id="<?php echo $titlePassengerNumber; ?>" name="<?php echo $titlePassengerNumber; ?>" required>
                                         <option value="Mme" <?php 
-                                        if ("Mme" == isset($valuesForm[$titlePassengerNumber]) || empty($valuesForm[$titlePassengerNumber])) {
+                                        if ("Mme" == isset($_SESSION[$titlePassengerNumber]) || empty($_SESSION[$titlePassengerNumber])) {
                                             echo "selected";
                                         };?> >Madame</option>
                                         <option value="M" <?php
-                                        if ("M" == isset($valuesForm[$titlePassengerNumber])) {
+                                        if ("M" == isset($_SESSION[$titlePassengerNumber])) {
                                             "selected";  
                                         };?> >Monsieur</option>
                                     </select>
@@ -73,16 +48,16 @@
                                 <div class="col-md mb-3">
                                     <label for="<?php echo $firstNamePassengerNumber; ?>" class="form-label">Prénom :</label>
                                     <input type="text" class="form-control" id="<?php echo $firstNamePassengerNumber; ?>" name="<?php echo $firstNamePassengerNumber; ?>" value="<?php
-                                    if (isset($valuesForm['firstNamePassengerNumber'])) {
-                                        echo $valuesForm['firstNamePassengerNumber'];
+                                    if (isset($_SESSION[$firstNamePassengerNumber])) {
+                                        echo $_SESSION[$firstNamePassengerNumber];
                                         }
                                     ?>" required>
                                 </div>
                                 <div class="col-md mb-3" id="return-flight">
                                     <label for="<?php echo $lastNamePassengerNumber; ?>" class="form-label">Nom :</label>
                                     <input type="text" class="form-control" id="<?php echo $lastNamePassengerNumber; ?>" name="<?php echo $lastNamePassengerNumber; ?>" value="<?php 
-                                    if (isset($valuesForm['lastNamePassengerNumber'])) {
-                                        echo $valuesForm['lastNamePassengerNumber'];
+                                    if (isset($_SESSION[$lastNamePassengerNumber])) {
+                                        echo $_SESSION[$lastNamePassengerNumber];
                                     };?>" required>
                                 </div>
                             </div>
@@ -97,7 +72,6 @@
                                         echo "<p class=\"text-danger\">".$value ."</p>";
                                     }
                                 }
-                                session_unset()
                                 ?>
                             </div>
                         </div>

@@ -60,25 +60,6 @@ class Validator
                 $this->errors['search-form-not-filled'] = $searchFormNotFilledMessage;
             }
         }
-
-        if ('' !== $this->params['number-of-passenger'] && ('/group-travel-confirmation.php' !== htmlspecialchars($_SERVER["PHP_SELF"]))) {
-            // echo 'rentre';
-            if (!array_key_exists('title-passenger-1',$this->params) && '/confirmation.php' == htmlspecialchars($_SERVER["PHP_SELF"])) {
-                if (substr($inputItem,0 ,strlen('title-passenger-')) == 'title-passenger-') {
-                    // echo 'pas de pssg';
-                    $this->errors['title-of-passenger'] = "La civilité du passger est requis.";
-                }
-        
-                if (substr($inputItem,0 ,strlen('first-name-passenger-')) == 'first-name-passenger-') {
-                    $this->errors['first-name-of-passenger'] = "Le prénom de tous les est passgers est requis.";
-                }
-        
-                if (substr($inputItem,0 ,strlen('last-name-passenger-')) == 'last-name-passenger-') {
-                    $this->errors['last-name-of-passenger'] = "Le nom de tous les est passgers est requis.";
-                }
-                $this->errors['last-name-of-passenger'] = "Le nom de tous les est passgers est requis.";
-            }
-        }
     }
 
     public function limited(string $inputItem)

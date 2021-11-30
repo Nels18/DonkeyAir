@@ -83,11 +83,17 @@ $_SESSION['trip-class'] = $tripClass;
 $_SESSION['number-of-passenger'] = $numberOfPassenger;
 $_SESSION['trip-type'] = $tripType;
 $_SESSION['outbound-flight-price-with-class'] = $resultPriceOutbound[0]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"];
+$_SESSION['return-flight-price-with-class'] = $resultPriceOutbound[1]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"];
 if (isset($resultPriceOutbound[1]['price'], $_SESSION['return-flight-price-with-class'])){
     $_SESSION['return-flight-price-with-class'] = $resultPriceOutbound[1]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"];
     $_SESSION['total-price'] = $_SESSION['outbound-flight-price-with-class'] + $_SESSION['return-flight-price-with-class'];
 }
 
+$_SESSION['departure-from'] = $departureTimeOutboundFlight;
+$_SESSION['departure-to'] = $arrivalTimeOutboundFlight;
+$_SESSION['return-from'] = $departureTimeReturnFlight;
+$_SESSION['return-to'] = $arrivalTimeReturnFlight;
+var_dump($_SESSION);
 ?>
 
 <!doctype html>
@@ -284,7 +290,7 @@ if (isset($resultPriceOutbound[1]['price'], $_SESSION['return-flight-price-with-
                     </div>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <a href="option.php">
-                            <button class="btn btn-success me-md-2 btn-lg" type="button">Réserver</button>
+                            <button class="btn btn-success me-md-2 btn-lg" type="submit">Réserver</button>
                         </a>
                     </div>
                 </div>
