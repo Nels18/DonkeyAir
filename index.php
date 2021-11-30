@@ -27,7 +27,7 @@
                         ?> 
                     </p>
                     <h2>Rechercher des vols</h2>
-                    <?php include("templates/form-search.php");?>
+                   <?php include("templates/form-search.php");?>
                 </div>
             </div>
         </main>

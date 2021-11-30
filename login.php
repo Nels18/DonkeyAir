@@ -1,5 +1,4 @@
-<!--div class="card p-5 m-5 rounded-3" >
-  <?php
+<?php
     require_once "lib/Database.php";
     
     $email = $_POST['email'];
@@ -26,8 +25,7 @@
     }
     
    
-  ?>
-  </div-->
+?>
 
 <!DOCTYPE html>
   <html lang="fr">
@@ -77,4 +75,3 @@
     </body>
    
 </html>
-
