@@ -3,7 +3,7 @@ session_start();
 
 require_once("lib/Dataform.php");
 $data = Dataform::getInstance()->getData();
-var_dump($_SESSION);
+// var_dump($_SESSION);
 // var_dump($data);
 if (!empty($data)) {
     $valuesForm = [
@@ -15,7 +15,7 @@ if (!empty($data)) {
         'trip-type' => $data['trip-type'],
         'number-of-passenger' => $data['number-of-passenger'],
     ];
-    var_dump($valuesForm);
+    // var_dump($valuesForm);
 }
 
 
