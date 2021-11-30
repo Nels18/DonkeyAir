@@ -9,7 +9,6 @@
     $request = " SELECT * from customer where password = '".$sha_Password."' and email = '".$email."' ";
     $database = Database::getInstance();
     $result = $database->query($request);
-    //var_dump($result);
     if (isset($_POST['submit'])) {
       if ($email == $result[0]["email"] && (SHA1($password) == $result[0]["password"])) 
       {
