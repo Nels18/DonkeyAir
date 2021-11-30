@@ -89,11 +89,14 @@ if (isset($resultPriceOutbound[1]['price'], $_SESSION['return-flight-price-with-
     $_SESSION['total-price'] = $_SESSION['outbound-flight-price-with-class'] + $_SESSION['return-flight-price-with-class'];
 }
 
-$_SESSION['departure-from'] = $departureTimeOutboundFlight;
-$_SESSION['departure-to'] = $arrivalTimeOutboundFlight;
-$_SESSION['return-from'] = $departureTimeReturnFlight;
-$_SESSION['return-to'] = $arrivalTimeReturnFlight;
-var_dump($_SESSION);
+$_SESSION['departure-from'] = $_POST['city-start'];
+$_SESSION['departure-to'] = $_POST['city-to'];
+$_SESSION['return-from'] = $_POST['city-to'];
+$_SESSION['return-to'] = $_POST['city-start'];
+$_SESSION['departure-time-outbound-flight'] = $resultAvailableOutboundFlight[0]['departure_date'];
+$_SESSION['arrival-time-outbound-flight'] = $resultAvailableOutboundFlight[0]['arrival_date'];
+$_SESSION['departure-time-return-flight'] = $resultAvailableReturnFlight[0]['departure_date'];
+$_SESSION['arrival-time-return-flight'] = $resultAvailableReturnFlight[0]['arrival_date'];
 ?>
 
 <!doctype html>

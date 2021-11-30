@@ -18,8 +18,6 @@ $data = Database::getInstance();
   $_SESSION['outbound-flight-final-price'] = $_SESSION["outbound-flight-price-with-class"] * $resultMultiplierCoefficientOption[0]["multiplier_coefficient"];
   $_SESSION['return-flight-final-price'] = $_SESSION["return-flight-price-with-class"] * $resultMultiplierCoefficientOption[0]["multiplier_coefficient"];
   $_SESSION["final-price"] = $_SESSION['outbound-flight-final-price'] + $_SESSION['return-flight-final-price'];
-var_dump($_SESSION);
-var_dump($_POST);
 ?>
 
 <!DOCTYPE html>
