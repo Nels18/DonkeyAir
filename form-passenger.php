@@ -5,7 +5,7 @@
 
     // session_unset();
 
-    var_dump($_SESSION);
+    // var_dump($_SESSION);
 
     $valuesForm = [
         'city-start' => 'AAE, Annaba Les Salines - Algeria',
@@ -20,11 +20,11 @@
         'number-of-passenger' => '3',
     ];
 
-    var_dump($valuesForm['city-to'] == $valuesForm['city-start']);
+    // var_dump($valuesForm['city-to'] == $valuesForm['city-start']);
     // $dataForm->testData($valuesForm);
 
     $validatorForm = new Validator($valuesForm);
-    var_dump($validatorForm->mustBeDifferent());
+    // var_dump($validatorForm->mustBeDifferent());
 
     
     // $_SESSION['fail-message'] = $validatorForm->getErrors(array_keys($valuesForm));

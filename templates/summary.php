@@ -18,8 +18,8 @@
     // if (!isset($_SESSION)) {
     //     header("location:index.php");
     // }
-    var_dump($_POST) ;
-    var_dump($_SESSION) ;
+    // var_dump($_POST) ;
+    // var_dump($_SESSION) ;
         ### fake value from db
         
         // $_SESSION = [

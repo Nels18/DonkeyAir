@@ -69,20 +69,24 @@ $resultIdAvailableOutboundFlight = $data->query($requestIdAvailableOutboundFligh
 $resultAvailableOutboundFlight = $data->query($requestAvailableOutboundFlight);
 $resultAvailableReturnFlight = $data->query($requestAvailableReturnFlight);
 
-$departureTimeOutboundFlight = strftime('%H%M',strtotime($resultAvailableOutboundFlight[0]['departure_date']));
-$arrivalTimeOutboundFlight = strftime('%H%M',strtotime($resultAvailableOutboundFlight[0]['arrival_date']));
-$departureTimeReturnFlight = strftime('%H%M',strtotime($resultAvailableReturnFlight[0]['departure_date']));
-$arrivalTimeReturnFlight = strftime('%H%M',strtotime($resultAvailableReturnFlight[0]['arrival_date']));
-$idOutboundFlight = $resultOutboundFlightID[0]['id'];
-$idReturnFlight = $resultReturnFlightID[0]['id']; 
+if (isset($resultAvailableOutboundFlight[0]['departure_date'], $resultAvailableReturnFlight[0]['departure_date'])) {
+    $departureTimeOutboundFlight = strftime('%H%M',strtotime($resultAvailableOutboundFlight[0]['departure_date']));
+    $arrivalTimeOutboundFlight = strftime('%H%M',strtotime($resultAvailableOutboundFlight[0]['arrival_date']));
+    $departureTimeReturnFlight = strftime('%H%M',strtotime($resultAvailableReturnFlight[0]['departure_date']));
+    $arrivalTimeReturnFlight = strftime('%H%M',strtotime($resultAvailableReturnFlight[0]['arrival_date']));
+    $idOutboundFlight = $resultOutboundFlightID[0]['id'];
+    $idReturnFlight = $resultReturnFlightID[0]['id']; 
+}
 
 // Set datas into $_SESSION
 $_SESSION['trip-class'] = $tripClass;
 $_SESSION['number-of-passenger'] = $numberOfPassenger;
 $_SESSION['trip-type'] = $tripType;
 $_SESSION['outbound-flight-price-with-class'] = $resultPriceOutbound[0]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"];
-$_SESSION['return-flight-price-with-class'] = $resultPriceOutbound[1]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"];
-$_SESSION['total-price'] = $_SESSION['outbound-flight-price-with-class'] + $_SESSION['return-flight-price-with-class'];
+if (isset($resultPriceOutbound[1]['price'], $_SESSION['return-flight-price-with-class'])){
+    $_SESSION['return-flight-price-with-class'] = $resultPriceOutbound[1]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"];
+    $_SESSION['total-price'] = $_SESSION['outbound-flight-price-with-class'] + $_SESSION['return-flight-price-with-class'];
+}
 
 ?>
 
@@ -121,11 +125,12 @@ $_SESSION['total-price'] = $_SESSION['outbound-flight-price-with-class'] + $_SES
                                     <div class="carousel-item active">
                                         <div class="card card-item bg-light shadow-sm">
                                             <h4 class="card-header text-white bg-primary">
-                                                <?php if ($i == 0){
+                                                <?php if (($i == 0) && isset($resultAvailableOutboundFlight[0]['departure_date'])){
                                                     echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[0]['departure_date'] . " -1 day")));
-                                                } elseif ($i == 1) { 
+                                                } elseif (($i == 1) && isset($resultAvailableOutboundFlight[0]['departure_date'])){ 
                                                     echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[0]['departure_date']))); 
-                                                } else echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[0]['departure_date'] . " +$i day" . " -1 day")));
+                                                } elseif(isset($resultAvailableOutboundFlight[0]['departure_date'])) 
+                                                    echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[0]['departure_date'] . " +$i day" . " -1 day")));
                                                 ?>
                                             </h4>
                                             <div class="card-body">
@@ -152,13 +157,16 @@ $_SESSION['total-price'] = $_SESSION['outbound-flight-price-with-class'] + $_SES
                                 <div class="col-sm-6">
                                     <div class="card-title card-header">
                                         <div>
-                                            <?php echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[0]['departure_date']))); ?>
+                                            <?php if (isset($resultAvailableOutboundFlight[0]['departure_date']))
+                                                echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[0]['departure_date']))); ?>
                                         </div>
                                         <div>
                                             <i class="fas fa-clock"></i> 
-                                            <?php echo(strftime('%H:%M',strtotime($resultAvailableOutboundFlight[0]['departure_date']))); ?>
+                                            <?php if (isset($resultAvailableOutboundFlight[0]['departure_date']))
+                                                echo(strftime('%H:%M',strtotime($resultAvailableOutboundFlight[0]['departure_date']))); ?>
                                             <i class="fas fa-plane"></i> 
-                                            <?php echo(strftime('%H:%M',strtotime($resultAvailableOutboundFlight[0]['arrival_date']))); ?>
+                                            <?php if (isset($resultAvailableOutboundFlight[0]['arrival_date']))
+                                                echo(strftime('%H:%M',strtotime($resultAvailableOutboundFlight[0]['arrival_date']))); ?>
                                         </div>
                                     </div>
                                 </div>
@@ -166,10 +174,12 @@ $_SESSION['total-price'] = $_SESSION['outbound-flight-price-with-class'] + $_SES
                                     <div class="card-title card-header">
                                         <div>
                                             Numéro de vol: 
-                                            <?php echo $cityStart.$cityTo.$departureTimeOutboundFlight.$arrivalTimeReturnFlight.$idOutboundFlight; ?>
+                                            <?php if (isset($departureTimeOutboundFlight, $arrivalTimeReturnFlight, $idOutboundFlight))
+                                                echo $cityStart.$cityTo.$departureTimeOutboundFlight.$arrivalTimeReturnFlight.$idOutboundFlight; ?>
                                         </div>
                                         <div>
-                                            <?php echo $resultPriceOutbound[0]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"] . ' €' ?>
+                                            <?php if (isset($resultPriceOutbound[0]['price'], $resultMultiplierCoefficient[0]["multiplier_coefficient"]))
+                                                echo $resultPriceOutbound[0]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"] . ' €' ?>
                                         </div>
                                     </div>
                                 </div>
@@ -199,17 +209,18 @@ $_SESSION['total-price'] = $_SESSION['outbound-flight-price-with-class'] + $_SES
                                         <div class="carousel-item active">
                                             <div class="card card-item bg-light shadow-sm">
                                                 <h4 class="card-header text-white bg-primary">
-                                                    <?php if ($i == 0){
+                                                    <?php if (($i == 0) && isset($resultAvailableOutboundFlight[1]['departure_date'])){
                                                         echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[1]['departure_date'] . " -1 day")));
-                                                    } elseif ($i == 1) { 
+                                                    } elseif (($i == 1) && isset($resultAvailableOutboundFlight[1]['departure_date'])){ 
                                                         echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[1]['departure_date']))); 
-                                                    } else echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[1]['departure_date'] . " +$i day" . " -1 day")));
+                                                    } elseif (isset($resultAvailableOutboundFlight[1]['departure_date']))
+                                                        echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[1]['departure_date'] . " +$i day" . " -1 day")));
                                                     ?>
                                                 </h4>
                                                 <div class="card-body">
                                                     <p class="card-text">
                                                         <div class="card-body">
-                                                            <?php if ($i == 1) {
+                                                            <?php if (($i == 1) && isset($resultPriceOutbound[1]['price'], $resultMultiplierCoefficient[0]["multiplier_coefficient"])) {
                                                                 echo 'à partir de ' .$resultPriceOutbound[1]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"] . ' €';
                                                             }
                                                             else echo 'Pas de vols disponibles';
@@ -231,13 +242,16 @@ $_SESSION['total-price'] = $_SESSION['outbound-flight-price-with-class'] + $_SES
                                             <div class="col-sm-6">
                                                 <div class="card-title card-header">
                                                     <div>
-                                                        <?php echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[1]['departure_date']))); ?>
+                                                        <?php if (isset($resultAvailableOutboundFlight[1]['departure_date']))
+                                                            echo(strftime('%a. %d %b %G',strtotime($resultAvailableOutboundFlight[1]['departure_date']))); ?>
                                                     </div>
                                                     <div>
                                                         <i class="fas fa-clock"></i> 
-                                                        <?php echo(strftime('%H:%M',strtotime($resultAvailableOutboundFlight[1]['departure_date']))); ?>
+                                                        <?php if (isset($resultAvailableOutboundFlight[1]['departure_date']))
+                                                            echo(strftime('%H:%M',strtotime($resultAvailableOutboundFlight[1]['departure_date']))); ?>
                                                         <i class="fas fa-plane"></i> 
-                                                        <?php echo(strftime('%H:%M',strtotime($resultAvailableOutboundFlight[1]['arrival_date']))); ?>
+                                                        <?php if (isset($resultAvailableOutboundFlight[1]['arrival_date']))
+                                                            echo(strftime('%H:%M',strtotime($resultAvailableOutboundFlight[1]['arrival_date']))); ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -245,10 +259,12 @@ $_SESSION['total-price'] = $_SESSION['outbound-flight-price-with-class'] + $_SES
                                                 <div class="card-title card-header">
                                                     <div>
                                                         Numéro de vol: 
-                                                        <?php echo $cityTo.$cityStart.$departureTimeReturnFlight.$arrivalTimeReturnFlight.$idReturnFlight; ?>
+                                                        <?php if (isset($departureTimeReturnFlight, $arrivalTimeReturnFlight, $idReturnFlight))
+                                                            echo $cityTo.$cityStart.$departureTimeReturnFlight.$arrivalTimeReturnFlight.$idReturnFlight; ?>
                                                     </div>
                                                     <div>
-                                                        <?php echo $resultPriceOutbound[1]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"] . ' €' ?>
+                                                        <?php if (isset($resultPriceOutbound[1]['price'], $resultMultiplierCoefficient[0]["multiplier_coefficient"]))
+                                                            echo $resultPriceOutbound[1]['price'] * $resultMultiplierCoefficient[0]["multiplier_coefficient"] . ' €' ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -264,13 +280,13 @@ $_SESSION['total-price'] = $_SESSION['outbound-flight-price-with-class'] + $_SES
                                     </button>
                                 </div>
                             </div>
-                        </div>
-                    <?php endif; ?>
-                </div>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <a href="option.php">
-                        <button class="btn btn-success me-md-2 btn-lg" type="button">Réserver</button>
-                    </a>
+                        <?php endif; ?>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="option.php">
+                            <button class="btn btn-success me-md-2 btn-lg" type="button">Réserver</button>
+                        </a>
+                    </div>
                 </div>
             </div>
         </main>

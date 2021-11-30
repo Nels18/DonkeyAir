@@ -52,6 +52,9 @@ label {
     transform: translateY(-50%);
 }
 
+#selectedOutboundFlightInformations, #selectedReturnFlightInformations {
+    visibility: hidden;
+}
 /* Confirmation */
 
 .customer-header {
@@ -88,27 +91,33 @@ label {
     }
 }
 
-.outbound-flight, .return-flight {
-    width: 98%;
-    margin: 10px auto;
-    background: #1967D2;
-    font-weight: bold;
-    color: white;
-}
 
-body {
-    background-color: black;
-    background-image: url('/assets/img/plane.jpeg');
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-}
-
+/* Login */
 
 #hide {
     display: none;
 }
 
-#selectedOutboundFlightInformations, #selectedReturnFlightInformations {
-    visibility: hidden;
+/* Options */
+
+.titresad{
+    text-align: center;
+    background-color: hsl(216, 74%, 73%);
+    border-radius: 12px;
+    color: rgb(0, 0, 0);
+    }
+
+
+.border-primary{
+    background-color: rgb(244, 244, 244);
+    cursor: pointer;
+    
+}
+
+.border-primary:hover{
+    background-color: rgb(180, 232, 241);
+    cursor: pointer;
+}
+.button2{
+    margin-right: 70%;
 }

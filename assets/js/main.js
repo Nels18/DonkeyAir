@@ -117,11 +117,7 @@ else{
 };
 /* Carousel */
 
-// function changeBackgroundColor(newColor) {
-//   var elem = document.getElementById('btn-select-');
-//   elem.style.color = newColor;
-// }
-
+// buttons left and right for carousel slider
 document.getElementById("btn-select-outbound").addEventListener("click", function() {
   document.getElementById("selectedOutboundFlightInformations").style.visibility = "visible";
 });
