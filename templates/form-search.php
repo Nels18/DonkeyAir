@@ -3,20 +3,19 @@ session_start();
 
 require_once("lib/Dataform.php");
 $data = Dataform::getInstance()->getData();
-// var_dump($_SESSION);
-// var_dump($data);
 if (!empty($data)) {
     $valuesForm = [
-        'city-start' => $data['city-start'],
-        'city-to' => $data['city-to'],
+        'departure-from' => $data['city-start'],
+        'departure-to' => $data['city-to'],
         'departure-date' => $data['departure-date'],
         'return-date' => $data['return-date'],
         'trip-class' => $data['trip-class'],
         'trip-type' => $data['trip-type'],
         'number-of-passenger' => $data['number-of-passenger'],
     ];
-    // var_dump($valuesForm);
 }
+
+
 
 
 if ('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])):

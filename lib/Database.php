@@ -34,16 +34,4 @@ class Database
     {
         return $this->query('SELECT * FROM '.$tableName);
     }
-
-    public function importMigration(string $name)
-    {
-        // $this->query("SOURCE ../data/sql/$name;");
-        $pass = "";
-
-        if (DATABASE_PASS != '') {
-            $pass = '-p'.DATABASE_PASS;
-        }
-
-        echo "mysql -h".DATABASE_HOST." -u".DATABASE_USERNAME." $pass ".DATABASE_NAME." < ../data/sql/".$name;
-    }
 }

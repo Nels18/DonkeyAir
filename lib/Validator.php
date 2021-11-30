@@ -97,7 +97,6 @@ class Validator
                 $this->limited($inputItem);
             }
         }
-        // var_dump($this->params);
         $this->checkDates();
         $this->mustBeDifferent();
 
