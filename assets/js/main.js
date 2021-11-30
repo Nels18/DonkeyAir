@@ -1,6 +1,10 @@
-let request = new XMLHttpRequest();
+// function reqListener () {
+//   console.log(this.responseText);
+// }
+let request = new XMLHttpRequest(); // New request object
 const autocomplete = (object, element, field = null) => {
   let output = [];
+  // console.log('object : ', object);
 
   if (field !== null) {
     output = convertObjectToArray(object, field);
@@ -56,6 +60,11 @@ const showReturn = () => {
 const departureDate = document.querySelector('#departure-date');
 const returnDate = document.querySelector('#return-date');
 
+// returnDate.setAttribute('min',departureDate.getAttribute('min'));
+// departureDate.addEventListener('change', function(event) {
+//   returnDate.setAttribute('min',departureDate.value);
+// })
+
 
 window.onload = function () {
   console.log('request.response : ', request.response);
@@ -74,7 +83,7 @@ window.onload = function () {
     autocomplete(data, cityToAutocompleteList, "identification");
   };
 
-  // The onload method waits for a callback function that will do something with the received data
+  // La méthode onload attend une fct callback qui fera qqc avec les données reçues
   request.onload = function () {
     if (this.readyState == 4 && this.status == 200) {
       const airports = JSON.parse(this.responseText);
@@ -82,12 +91,13 @@ window.onload = function () {
     }
   };
 
-  // Instantiates a new query or resets an existing one.
+  // instancie une nouvelle requête ou réinitialise un déjà existante.
   request.open("get", "get-airports.php", true);
 
-  // Sends the request. If the request is asynchronous (the default behavior), the method returns a result as soon as the request is sent.
+  // Envoie la requête. Si la requête est asynchrone (le comportement par défaut), la méthode renvoie un résultat dès que la requête est envoyée.
   request.send();
 
+  // console.log(request);
   showReturn();
 };
 

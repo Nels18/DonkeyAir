@@ -5,8 +5,8 @@ require_once("lib/Dataform.php");
 $data = Dataform::getInstance()->getData();
 if (!empty($data)) {
     $valuesForm = [
-        'city-start' => $data['city-start'],
-        'city-to' => $data['city-to'],
+        'departure-from' => $data['city-start'],
+        'departure-to' => $data['city-to'],
         'departure-date' => $data['departure-date'],
         'return-date' => $data['return-date'],
         'trip-class' => $data['trip-class'],
@@ -14,6 +14,8 @@ if (!empty($data)) {
         'number-of-passenger' => $data['number-of-passenger'],
     ];
 }
+
+
 
 
 if ('/group-travel.php' == htmlspecialchars($_SERVER["PHP_SELF"])):

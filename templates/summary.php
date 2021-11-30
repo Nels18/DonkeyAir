@@ -17,11 +17,22 @@
         header("location:index.php");
     }
 
+    if ($isInGroupTravelConfirmationPage) {
+        // $_SESSION['departure-time-return-flight'] = $_POST[];
+        // $_SESSION['arrival-time-return-flight'] = $_POST[];
+        $_SESSION['departure-from'] = $_POST['city-start'];
+        $_SESSION['departure-to'] = $_POST['city-to'];
+        $_SESSION['departure-date'] = $_POST['departure-date'];
+        $_SESSION['return-date'] = $_POST['return-date'];
+        $_SESSION['trip-class'] = $_POST['trip-class'];
+        $_SESSION['trip-type'] = $_POST['trip-type'];
+        $_SESSION['number-of-passenger'] = $_POST['number-of-passenger'];
+    }
+
     ### fake user 
     $query = "SELECT * FROM customer WHERE id = $userId";
     $result = Database::getInstance()->query($query);
     $user = $result[0];
-
 
     $validatorForm = new Validator($_SESSION);
     $_SESSION['fail-message'] = $validatorForm->getErrors(array_keys($_SESSION));
@@ -77,7 +88,7 @@
                                             <p>Vers : <?= $_SESSION['departure-to'];?></p>
                                             <p>Départ à 
                                                 <?php
-                                                $valuesFormTime = strftime('%H:%M ',strtotime($_SESSION['departure-time-outbound-flight']));
+                                                $valuesFormTime = strftime('%H:%M - %a. %d %b %G',strtotime($_SESSION['departure-time-outbound-flight']));
             
                                                 if (!empty($_SESSION['departure-time-outbound-flight']) && strtotime($_SESSION['departure-time-outbound-flight'])) {
                                                     echo $valuesFormTime;
@@ -85,7 +96,7 @@
                                             </p>
                                             <p>Arrivé à 
                                                 <?php
-                                                $valuesFormTime = strftime('%H:%M ',strtotime($_SESSION['arrival-time-outbound-flight']));
+                                                $valuesFormTime = strftime('%H:%M - %a. %d %b %G',strtotime($_SESSION['arrival-time-outbound-flight']));
             
                                                 if (!empty($_SESSION['arrival-time-outbound-flight']) && strtotime($_SESSION['arrival-time-outbound-flight'])) {
                                                     echo $valuesFormTime;
@@ -108,7 +119,7 @@
                                                 <p>Vers : <?= $_SESSION['departure-from'];?></p>
                                                 <p>Départ à
                                                     <?php
-                                                    $valuesFormTime = strftime('%H:%M ',strtotime($_SESSION['departure-time-return-flight']));
+                                                    $valuesFormTime = strftime('%H:%M - %a. %d %b %G',strtotime($_SESSION['departure-time-return-flight']));
             
                                                     if (!empty($_SESSION['departure-time-return-flight']) && strtotime($_SESSION['departure-time-return-flight'])) {
                                                         echo $valuesFormTime;
@@ -116,7 +127,7 @@
                                                 </p>
                                                 <p>Arrivé à
                                                     <?php
-                                                    $valuesFormTime = strftime('%H:%M ',strtotime($_SESSION['arrival-time-return-flight']));
+                                                    $valuesFormTime = strftime('%H:%M - %a. %d %b %G',strtotime($_SESSION['arrival-time-return-flight']));
             
                                                     if (!empty($_SESSION['arrival-time-return-flight']) && strtotime($_SESSION['arrival-time-return-flight'])) {
                                                         echo $valuesFormTime;
@@ -139,26 +150,17 @@
                                 <div class="card mt-5 rounded-3">
                                     <h4 class="card-title card-header text-white bg-primary">Vol aller</h4>
                                     <div class="card-body">
-                                        <p>Depuis : <?= isset($_SESSION['departure-time-return-flight']);?></p>
-                                        <p>Vers : <?= $_SESSION['arrival-time-return-flight'];?></p>
-                                        <p>Départ à 
+                                        <p>Depuis : <?= $_SESSION['departure-from'];?></p>
+                                        <p>Vers : <?= $_SESSION['departure-to'];?></p>
+                                        <p>Départ le 
                                             <?php
-                                            $valuesFormTime = strftime('%H:%M ',strtotime($_SESSION['departure-from']));
+                                            $valuesFormTime = $_SESSION['departure-date'];
         
-                                            if (!empty($_SESSION['departure-from']) && strtotime($_SESSION['departure-from'])) {
-                                                echo $valuesFormTime;
-                                            };?>
-                                        </p>
-                                        <p>Arrivé à 
-                                            <?php
-                                            $valuesFormTime = strftime('%H:%M ',strtotime($_SESSION['departure-to']));
-        
-                                            if (!empty($_SESSION['departure-to']) && strtotime($_SESSION['departure-to'])) {
-                                                echo $valuesFormTime;
+                                            if (!empty($_SESSION['departure-date']) && $_SESSION['departure-date']) {
+                                                echo strftime('%a. %d %b %G',strtotime($valuesFormTime));
                                             };?>
                                         </p>
                                         <p>En classe <?= $_SESSION['trip-class'];?></p>
-                                        <p>Avec l'option <?= $_SESSION['trip-option'];?></p>
                                         <?php if ($isInGroupTravelConfirmationPage): ;?>
                                             <p>Pour <?= $_SESSION['number-of-passenger'];?> personne(s)</p>
                                         <?php endif ;?>
@@ -170,30 +172,21 @@
                                     <div class="card mt-5 rounded-3">
                                         <h4 class="card-title card-header text-white bg-primary">Vol retour</h4>
                                         <div class="card-body">
-                                            <p>Depuis : <?= $_SESSION['city-to'];?></p>
-                                            <p>Vers : <?= $_SESSION['city-start'];?></p>
-                                            <p>Départ à
-                                                <?php
-                                                $valuesFormTime = strftime('%H:%M ',strtotime($_SESSION['departure-time-return-flight']));
+                                        <p>Depuis : <?= $_SESSION['departure-to'];?></p>
+                                        <p>Vers : <?= $_SESSION['departure-from'];?></p>
+                                        <p>Départ le 
+                                            <?php
+                                            $valuesFormTime = $_SESSION['return-date'];
         
-                                                if (!empty($_SESSION['departure-time-return-flight']) && strtotime($_SESSION['departure-time-return-flight'])) {
-                                                    echo $valuesFormTime;
-                                                };?>
-                                            </p>
-                                            <p>Arrivé à
-                                                <?php
-                                                $valuesFormTime = strftime('%H:%M ',strtotime($_SESSION['arrival-time-return-flight']));
-        
-                                                if (!empty($_SESSION['arrival-time-return-flight']) && strtotime($_SESSION['arrival-time-return-flight'])) {
-                                                    echo $valuesFormTime;
-                                                };?>
-                                            </p>
-                                            <p>En classe <?= $_SESSION['trip-class'];?></p>
-                                            <p>Avec l'option <?= $_SESSION['trip-option'];?></p>
-                                            <?php if ($isInGroupTravelConfirmationPage): ;?>
-                                                <p>Pour <?= $_SESSION['number-of-passenger'];?> personne(s)</p>
-                                            <?php endif ;?>
-                                        </div>
+                                            if (!empty($_SESSION['return-date']) && $_SESSION['return-date']) {
+                                                echo strftime('%a. %d %b %G',strtotime($valuesFormTime));
+                                            };?>
+                                        </p>
+                                        <p>En classe <?= $_SESSION['trip-class'];?></p>
+                                        <?php if ($isInGroupTravelConfirmationPage): ;?>
+                                            <p>Pour <?= $_SESSION['number-of-passenger'];?> personne(s)</p>
+                                        <?php endif ;?>
+                                    </div>
                                     </div>
                                 </div>
                             <?php endif ;?>

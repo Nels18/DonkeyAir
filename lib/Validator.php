@@ -16,6 +16,7 @@ class Validator
     {
         $searchFormNotFilledMessage = "Veuillez nous indiquer votre recherche pour commencer";
         if ('' == $this->params[$inputItem]) {
+            // echo '##!key-exists<br>';
             if ('city-start' == $inputItem) {
                 $this->errors['city-start'] = "Une ville de départ est requise.";
             } elseif (!array_key_exists('city-start',$this->params)) {
@@ -74,6 +75,7 @@ class Validator
             if (isset($this->params['city-to']) == isset($this->params['city-start'])) {
                 if ($this->params['city-to'] == $this->params['city-start']) {
                     $this->errors['same-airports'] = 'Vous devez choisir un aéroport différent de celui de départ';
+                    // echo $this->params;
                 }
             }
         }
