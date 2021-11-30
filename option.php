@@ -6,52 +6,22 @@ require_once "lib/Database.php";
 
 
 $data = Database::getInstance();
-// var_dump($_SESSION);
-//die;
-// if (isset($_SESSION['choix']) && $_SESSION['choix'] == 'Yes') {
-//   $optionChoisi = $_SESSION['optionBasic'];
-//    }
-// if (isset($_SESSION['choix2']) && $_SESSION['choix2'] == 'Yes') {
-//     $optionChoisi = $_SESSION['optionFlex'];
-//      }
-// if (isset($_SESSION['choix3']) && $_SESSION['choix3'] == 'Yes') {
-//       $optionChoisi = $_SESSION['optionMax'];
-// }
+
   $query2= "SELECT * FROM `option`";
   $resultat2= Database::getInstance()->query($query2);
   $option= $resultat2;
 
-
-
-// foreach ($resultat2 as $key){
-//   var_dump($key ['id']);
-//   var_dump($key ['name']);
-
-//   var_dump($key['multiplier_coefficient']);
-// }
-
-  // var_dump($resultat2);
-
-  // $_SESSION['option'] = $_POST['option'];
-  // var_dump($resultat2);
-  $optionChoice= $_POST["option"];
-
   $requestMultiplierCoefficientOption = "SELECT multiplier_coefficient 
-  FROM `option`
-  WHERE name = '$optionChoice';";
+  FROM `option`";
+
   $resultMultiplierCoefficientOption = $data->query($requestMultiplierCoefficientOption);
   $_SESSION['outbound-flight-final-price'] = $_SESSION["outbound-flight-price-with-class"] * $resultMultiplierCoefficientOption[0]["multiplier_coefficient"];
   $_SESSION['return-flight-final-price'] = $_SESSION["return-flight-price-with-class"] * $resultMultiplierCoefficientOption[0]["multiplier_coefficient"];
   $_SESSION["final-price"] = $_SESSION['outbound-flight-final-price'] + $_SESSION['return-flight-final-price'];
-  // var_dump($resultat2);
-  // var_dump($_SESSION['outbound-flight-final-price']);
-    
-    // var_dump($option);
-    
+var_dump($_SESSION);
+var_dump($_POST);
 ?>
 
-
-Ò
 <!DOCTYPE html>
 <html lang="fr">
   <head>
@@ -66,7 +36,7 @@ $data = Database::getInstance();
 
   <body>  
     <main class="container-fluid bg-image">
-      <form action="option.php" method="post">
+      <form action="form-passenger.php" method="post">
         <div class="card-group">
           <div class="card">
             <div class="card-body">
@@ -75,7 +45,7 @@ $data = Database::getInstance();
               <p>Billet Modifiable</p><br>
               <p>Annulation du billet</p><br>
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <input type="radio" name="option" value="Basic"/>
+                <input type="radio" name="trip-option" value="Basic"/>
               </div>
             </p>
           </div>
@@ -88,7 +58,7 @@ $data = Database::getInstance();
               <p>Billet Modifiable</p><br>
               <p>Annulation du billet</p><br>
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <input type="radio" name="option" value="Plus"/>
+                <input type="radio" name="trip-option" value="Plus"/>
               </div>
             </p>
           </div>
@@ -101,15 +71,13 @@ $data = Database::getInstance();
             <p>Billet Modifiable</p><br>
             <p>Annulation du billet</p><br>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <input type="radio" name="option" value="Max"/>
+              <input type="radio" name="trip-option" value="Max"/>
             </div>
           </p>
         </div>
           
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <a href="confirmation.php">
-          <input class="btn btn-primary" type="button" value="Valider">
-        </a>
+          <input class="btn btn-primary" type="submit" value="Valider">
         </div>
     </form>
     </main>
