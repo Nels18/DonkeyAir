@@ -32,6 +32,7 @@ SOURCE data/sql/database.sql
 ```
 SOURCE data/sql/insert-data.sql
 ```
+If it doesn't work try with absolute path.
 
 ## LAUNCH WEBSITE
 
